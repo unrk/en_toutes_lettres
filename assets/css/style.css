@@ -1,0 +1,47 @@
+:root {
+    --couleur-texte: #1a1a1a;
+    --couleur-fond: #ffffff;
+    --couleur-accent: #7a3b12; /* à ajuster à l'identité visuelle de l'association */
+    --espacement: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--couleur-texte);
+    background-color: var(--couleur-fond);
+    line-height: 1.5;
+}
+
+.entete {
+    padding: var(--espacement);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.entete__logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: var(--couleur-accent);
+    text-decoration: none;
+}
+
+.contenu {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: var(--espacement);
+}
+
+.pied {
+    padding: var(--espacement);
+    text-align: center;
+    font-size: 0.875rem;
+    color: #555555;
+}
+
+a {
+    color: var(--couleur-accent);
+}

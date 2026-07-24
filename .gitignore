@@ -3,9 +3,13 @@ config.local.php
 .env
 .aide_push_git
 
-# Fichiers envoyés par les utilisateurs
-/uploads/
-/medias/
+# Fichiers envoyés par les utilisateurs (le contenu est ignoré, la protection reste)
+/uploads/*
+!/uploads/.htaccess
+!/uploads/.gitkeep
+/medias/*
+!/medias/.htaccess
+!/medias/.gitkeep
 
 # Système
 .DS_Store

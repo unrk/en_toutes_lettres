@@ -1,0 +1,39 @@
+# Point d'entrée unique : toute requête qui ne correspond pas à un fichier ou
+# un dossier existant est envoyée vers index.php (routeur maison). Les fichiers
+# réels (assets/, uploads/, medias/...) continuent d'être servis directement.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# En-têtes de sécurité de base.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # À activer une fois le HTTPS confirmé sur le domaine définitif et le CSS/JS
+    # inline audité : un HSTS mal réglé est difficile à annuler (mis en cache par
+    # le navigateur), une CSP mal réglée casse silencieusement des scripts/styles.
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    # Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'"
+</IfModule>
+
+# Pas de listing de dossier.
+Options -Indexes
+
+# Défense en profondeur : ces fichiers/dossiers sont déjà protégés ailleurs
+# (app/, templates/, migrations/, bin/ ont chacun leur propre .htaccess ; les
+# fichiers sensibles sont gitignorés) mais on bloque aussi ici au cas où.
+<FilesMatch "\.(sql|md|dist)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(config\.php|config\.local\.php)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

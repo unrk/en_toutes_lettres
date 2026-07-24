@@ -1,0 +1,29 @@
+<?php
+
+// Copiez ce fichier en config.local.php (à la racine du projet) et remplissez
+// les informations ci-dessous. config.local.php ne doit JAMAIS être envoyé sur
+// Git (il est dans .gitignore) car il contient des informations sensibles.
+
+return [
+    // Mettre à true uniquement en développement local : affiche le détail
+    // technique des erreurs au lieu d'un message générique.
+    'debug' => true,
+
+    'url_base' => 'http://localhost:8000',
+
+    'bdd' => [
+        'hote' => '127.0.0.1',
+        'port' => 3306,
+        'nom' => 'en_toutes_lettres',
+        'utilisateur' => 'root',
+        'mot_de_passe' => '',
+    ],
+
+    // Jeton secret à inclure dans l'URL des tâches planifiées Infomaniak,
+    // par ex. https://.../taches/executer?tache=newsletter&jeton=CE_JETON
+    // Générez une valeur aléatoire longue avec :
+    //   php -r "echo bin2hex(random_bytes(32));"
+    'taches_planifiees' => [
+        'jeton' => 'a-remplacer-par-un-jeton-aleatoire',
+    ],
+];
