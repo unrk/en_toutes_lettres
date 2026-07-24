@@ -1,6 +1,7 @@
 # Secrets et config locale
 config.local.php
 .env
+.aide_push_git
 
 # Fichiers envoyés par les utilisateurs
 /uploads/
