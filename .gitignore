@@ -1,0 +1,16 @@
+# Secrets et config locale
+config.local.php
+.env
+
+# Fichiers envoyés par les utilisateurs
+/uploads/
+/medias/
+
+# Système
+.DS_Store
+Thumbs.db
+.vscode/sftp.json
+
+# Dépendances
+/vendor/
+/node_modules/
