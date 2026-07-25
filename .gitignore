@@ -2,6 +2,7 @@
 config.local.php
 .env
 .aide_push_git
+CLAUDE.md
 
 # Fichiers envoyés par les utilisateurs (le contenu est ignoré, la protection reste)
 /uploads/*
