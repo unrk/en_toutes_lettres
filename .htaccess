@@ -13,10 +13,11 @@ RewriteRule ^ index.php [L]
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 
-    # À activer une fois le HTTPS confirmé sur le domaine définitif et le CSS/JS
-    # inline audité : un HSTS mal réglé est difficile à annuler (mis en cache par
-    # le navigateur), une CSP mal réglée casse silencieusement des scripts/styles.
-    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    # HTTPS confirmé sur Infomaniak (2026-07) : HSTS activé.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # CSP encore commentée : à activer une fois le CSS/JS inline audité (une CSP
+    # mal réglée casse silencieusement des scripts/styles sans erreur visible).
     # Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'"
 </IfModule>
 
