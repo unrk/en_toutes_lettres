@@ -1,0 +1,272 @@
+/* Espace bénévoles : priorité à la lisibilité et à l'usage au doigt sur mobile. */
+
+.admin-corps {
+    background-color: #f4f1ec;
+}
+
+.admin-entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-entete__logo {
+    font-weight: bold;
+    color: var(--couleur-accent);
+    text-decoration: none;
+}
+
+.admin-entete__nav {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+}
+
+.admin-entete__utilisateur {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-entete__deconnexion button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.admin-contenu {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.admin-connexion {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.admin-connexion__carte {
+    width: 100%;
+    max-width: 24rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-connexion__aide {
+    color: #555555;
+    font-size: 0.9rem;
+}
+
+.admin-entete-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-formulaire {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.admin-formulaire label {
+    font-weight: 600;
+    margin-top: 0.75rem;
+}
+
+.admin-formulaire input[type="text"],
+.admin-formulaire input[type="email"],
+.admin-formulaire input[type="password"],
+.admin-formulaire input[type="datetime-local"],
+.admin-formulaire input[type="file"] {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+}
+
+.admin-case {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: normal;
+    margin-top: 0.5rem;
+}
+
+.admin-statuts {
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+}
+
+.admin-editeur {
+    min-height: 10rem;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    background-color: #ffffff;
+}
+
+.admin-editeur__barre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.admin-editeur__barre button {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.admin-champ-cache {
+    display: none;
+}
+
+.admin-image-actuelle {
+    max-width: 10rem;
+    display: block;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-formulaire__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.admin-bouton {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    color: var(--couleur-texte);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.admin-bouton--principal {
+    background-color: var(--couleur-accent);
+    border-color: var(--couleur-accent);
+    color: #ffffff;
+}
+
+.admin-bouton--danger {
+    background-color: #ffffff;
+    border-color: #b3261e;
+    color: #b3261e;
+}
+
+.admin-message {
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    margin: 0.5rem 0;
+}
+
+.admin-message--erreur {
+    background-color: #fdecea;
+    color: #b3261e;
+}
+
+.admin-message--info {
+    background-color: #eaf2fd;
+    color: #1a4d8f;
+}
+
+.admin-tableau {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+.admin-tableau th,
+.admin-tableau td {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.admin-tableau__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.admin-tableau__actions form {
+    display: inline;
+}
+
+.admin-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+}
+
+.admin-badge--brouillon {
+    background-color: #eeeeee;
+    color: #555555;
+}
+
+.admin-badge--publie {
+    background-color: #e3f5e6;
+    color: #1e7a34;
+}
+
+.admin-badge--programme {
+    background-color: #fff4e0;
+    color: #9a6300;
+}
+
+.apercu-actualite__image {
+    max-width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 40rem) {
+    .admin-tableau,
+    .admin-tableau thead,
+    .admin-tableau tbody,
+    .admin-tableau tr,
+    .admin-tableau th,
+    .admin-tableau td {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-tableau thead {
+        display: none;
+    }
+
+    .admin-tableau tr {
+        margin-bottom: 1rem;
+        border: 1px solid #eee;
+        border-radius: 0.375rem;
+    }
+}

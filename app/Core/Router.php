@@ -42,7 +42,7 @@ final class Router
 
             [$classe, $methode] = $route['action'];
             $controleur = new $classe();
-            $controleur->$methode(...array_values($parametres));
+            $controleur->$methode($requete, ...array_values($parametres));
             return;
         }
 
