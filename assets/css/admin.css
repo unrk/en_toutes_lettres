@@ -8,6 +8,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     padding: 1rem;
     background-color: #ffffff;
@@ -16,28 +17,167 @@
 
 .admin-entete__logo {
     font-weight: bold;
+    font-size: 1.125rem;
     color: var(--couleur-accent);
     text-decoration: none;
 }
 
-.admin-entete__nav {
-    display: flex;
-    gap: 1rem;
-    flex: 1;
+/* Menu replié par défaut, y compris sur grand écran : sept rubriques dans un
+   bandeau deviendraient illisibles, et un seul comportement à comprendre vaut
+   mieux que deux. */
+.admin-menu {
+    position: relative;
 }
 
-.admin-entete__utilisateur {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.admin-entete__deconnexion button {
-    background: none;
-    border: 1px solid #ccc;
+.admin-menu__bouton {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid #999999;
     border-radius: 0.375rem;
-    padding: 0.5rem 0.75rem;
+    background-color: #ffffff;
     cursor: pointer;
+    font-size: 1rem;
+    list-style: none;
+    min-height: 2.75rem;
+}
+
+.admin-menu__bouton::-webkit-details-marker {
+    display: none;
+}
+
+.admin-menu__bouton::after {
+    content: ' ▾';
+}
+
+.admin-menu[open] .admin-menu__bouton::after {
+    content: ' ▴';
+}
+
+.admin-menu__contenu {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    min-width: 16rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.admin-menu__contenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-menu__contenu a {
+    display: block;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    /* Cible tactile confortable : ce menu s'utilise au doigt. */
+    min-height: 2.75rem;
+}
+
+.admin-menu__contenu a:hover,
+.admin-menu__contenu a:focus {
+    background-color: #f2ede6;
+}
+
+.admin-menu__contenu a[aria-current="page"] {
+    background-color: #f2ede6;
+    font-weight: 600;
+}
+
+.admin-menu__identite {
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+    color: #555555;
+}
+
+.admin-menu__deconnexion {
+    padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.admin-menu__deconnexion button {
+    width: 100%;
+}
+
+/* Visible uniquement au clavier : permet de sauter la navigation. */
+.admin-lien-evitement {
+    position: absolute;
+    left: -9999px;
+}
+
+.admin-lien-evitement:focus {
+    position: static;
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    background-color: var(--couleur-accent);
+    color: #ffffff;
+}
+
+/* Masqué à l'écran mais lu par les lecteurs d'écran. */
+.admin-invisible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Tuiles du tableau de bord : grandes cibles, une par rubrique. */
+.admin-tuiles {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+.admin-tuile {
+    display: block;
+    height: 100%;
+    padding: 1.25rem;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--couleur-texte);
+}
+
+.admin-tuile:hover,
+.admin-tuile:focus {
+    border-color: var(--couleur-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.admin-tuile__icone {
+    display: block;
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.admin-tuile__titre {
+    display: block;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--couleur-accent);
+    margin-bottom: 0.25rem;
+}
+
+.admin-tuile__description {
+    display: block;
+    font-size: 0.9rem;
+    color: #555555;
 }
 
 .admin-contenu {
@@ -99,12 +239,80 @@
     border-radius: 0.375rem;
 }
 
+/* Un champ = libellé + aide + saisie + erreur éventuelle, assemblé par
+   templates/admin/champs/. Corriger l'ergonomie ici la corrige partout. */
+.admin-champ {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 1.25rem;
+}
+
+.admin-champ > label,
+.admin-champ--choix > legend {
+    font-weight: 600;
+}
+
+.admin-champ__requis {
+    font-weight: normal;
+    color: #666666;
+    font-size: 0.875rem;
+}
+
+.admin-champ__aide {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555555;
+}
+
+.admin-champ input[type="text"],
+.admin-champ input[type="email"],
+.admin-champ input[type="password"],
+.admin-champ input[type="url"],
+.admin-champ input[type="datetime-local"],
+.admin-champ input[type="file"],
+.admin-champ textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid #999999;
+    border-radius: 0.375rem;
+}
+
+.admin-champ input[aria-invalid="true"],
+.admin-champ textarea[aria-invalid="true"],
+.admin-champ [aria-invalid="true"].admin-editeur {
+    border-color: #b3261e;
+    border-width: 2px;
+}
+
+.admin-champ__image-actuelle img {
+    max-width: 12rem;
+    display: block;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-champ--choix {
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+}
+
+.admin-case__precision {
+    display: block;
+    color: #555555;
+}
+
 .admin-case {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-weight: normal;
     margin-top: 0.5rem;
+    /* Cible tactile confortable : ces cases sont cochées au doigt. */
+    min-height: 2.75rem;
 }
 
 .admin-statuts {
@@ -196,6 +404,129 @@
     color: #1a4d8f;
 }
 
+.admin-message--succes {
+    background-color: #e3f5e6;
+    color: #145c26;
+}
+
+.admin-message--attention {
+    background-color: #fff4e0;
+    color: #7a4e00;
+}
+
+.admin-vide {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #555555;
+    background-color: #ffffff;
+    border: 1px dashed #ccc;
+    border-radius: 0.5rem;
+}
+
+.admin-section {
+    margin: 2rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.admin-vignette {
+    max-width: 5rem;
+    max-height: 3rem;
+    object-fit: contain;
+}
+
+.admin-cadenas {
+    margin-left: 0.25rem;
+}
+
+/* Liste de photos d'une galerie : une carte par photo, empilée sur téléphone. */
+.admin-photos {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.admin-photo {
+    display: grid;
+    grid-template-columns: 8rem 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+}
+
+.admin-photo--incomplete {
+    border-color: #d68f00;
+    border-width: 2px;
+    background-color: #fffaf0;
+}
+
+.admin-photo__image {
+    width: 100%;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 0.375rem;
+}
+
+.admin-photo__champs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.admin-photo__champs input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #999999;
+    border-radius: 0.375rem;
+}
+
+.admin-photo__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+    .admin-photo {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-classement {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.admin-bouton--discret {
+    padding: 0.6rem 0.75rem;
+    min-width: 2.75rem;
+}
+
+.admin-bouton[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.admin-tableau__ligne--inactive {
+    opacity: 0.65;
+}
+
+.admin-tableau__separateur td {
+    background-color: #f2ede6;
+    font-weight: 600;
+}
+
+.admin-tableau__precision {
+    display: block;
+    color: #555555;
+}
+
 .admin-tableau {
     width: 100%;
     border-collapse: collapse;
@@ -249,12 +580,13 @@
     margin-bottom: 1rem;
 }
 
-@media (max-width: 40rem) {
+/* Sur téléphone, le tableau se réorganise en cartes empilées : chaque cellule
+   reprend l'intitulé de sa colonne, sinon les valeurs seraient orphelines une
+   fois l'en-tête masqué. */
+@media (max-width: 45rem) {
     .admin-tableau,
-    .admin-tableau thead,
     .admin-tableau tbody,
     .admin-tableau tr,
-    .admin-tableau th,
     .admin-tableau td {
         display: block;
         width: 100%;
@@ -266,7 +598,33 @@
 
     .admin-tableau tr {
         margin-bottom: 1rem;
-        border: 1px solid #eee;
-        border-radius: 0.375rem;
+        padding: 0.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+    }
+
+    .admin-tableau td {
+        border-bottom: none;
+        padding: 0.5rem;
+    }
+
+    .admin-tableau td[data-intitule]::before {
+        content: attr(data-intitule);
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #666666;
+        margin-bottom: 0.25rem;
+    }
+
+    .admin-tableau__actions {
+        border-top: 1px solid #eee;
+        padding-top: 0.75rem;
+    }
+
+    .admin-tableau__actions .admin-bouton {
+        flex: 1 1 auto;
     }
 }

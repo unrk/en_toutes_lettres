@@ -2,89 +2,93 @@
 /** @var array|null $actualite */
 /** @var array<string, string> $erreurs */
 /** @var array<string, string> $valeurs */
+$action = $actualite === null
+    ? '/admin/actualites/creer'
+    : '/admin/actualites/' . (int) $actualite['id'] . '/modifier';
 ?>
-<h1><?= htmlspecialchars($titre, ENT_QUOTES, 'UTF-8') ?></h1>
+<h1><?= e($titre) ?></h1>
 
 <?php if (!empty($erreurs['general'])): ?>
-    <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['general'], ENT_QUOTES, 'UTF-8') ?></p>
+    <p class="admin-message admin-message--erreur" role="alert"><?= e($erreurs['general']) ?></p>
+<?php elseif ($erreurs !== []): ?>
+    <p class="admin-message admin-message--erreur" role="alert">
+        Le formulaire n'a pas pu être enregistré. Corrigez les points signalés
+        ci-dessous : rien de ce que vous avez écrit n'est perdu.
+    </p>
 <?php endif; ?>
 
-<form method="post"
-      action="<?= $actualite === null ? '/admin/actualites/creer' : '/admin/actualites/' . (int) $actualite['id'] . '/modifier' ?>"
-      enctype="multipart/form-data"
-      class="admin-formulaire admin-formulaire--actualite">
+<form method="post" action="<?= e($action) ?>" enctype="multipart/form-data" class="admin-formulaire">
     <?= \App\Core\Csrf::champ() ?>
 
-    <label for="champ_titre">Titre</label>
-    <input type="text" id="champ_titre" name="titre" value="<?= htmlspecialchars($valeurs['titre'], ENT_QUOTES, 'UTF-8') ?>" required>
-    <?php if (!empty($erreurs['titre'])): ?>
-        <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['titre'], ENT_QUOTES, 'UTF-8') ?></p>
-    <?php endif; ?>
+    <?php
+    champ('texte', [
+        'nom' => 'titre',
+        'libelle' => 'Titre',
+        'valeur' => $valeurs['titre'],
+        'erreurs' => $erreurs,
+        'obligatoire' => true,
+        'autofocus' => true,
+    ]);
 
-    <label for="champ_contenu_visible">Contenu</label>
-    <div class="admin-editeur__barre" data-barre-pour="champ_contenu_visible">
-        <button type="button" data-commande="bold">Gras</button>
-        <button type="button" data-commande="italic">Italique</button>
-        <button type="button" data-commande="formatBlock" data-valeur="H2">Titre</button>
-        <button type="button" data-commande="formatBlock" data-valeur="H3">Sous-titre</button>
-        <button type="button" data-commande="insertUnorderedList">Liste à puces</button>
-        <button type="button" data-commande="insertOrderedList">Liste numérotée</button>
-        <button type="button" data-commande="createLink">Lien</button>
-    </div>
-    <div id="champ_contenu_visible"
-         class="admin-editeur"
-         contenteditable="true"
-         data-editeur-enrichi
-         data-cible="champ_contenu_cache"><?= $valeurs['contenu'] ?></div>
-    <textarea id="champ_contenu_cache" name="contenu" class="admin-champ-cache"><?= $valeurs['contenu'] ?></textarea>
-    <?php if (!empty($erreurs['contenu'])): ?>
-        <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['contenu'], ENT_QUOTES, 'UTF-8') ?></p>
-    <?php endif; ?>
+    champ('choix', [
+        'nom' => 'type',
+        'libelle' => 'De quoi s\'agit-il ?',
+        'valeur' => $valeurs['type'],
+        'erreurs' => $erreurs,
+        'options' => [
+            'actualite' => 'Une actualité',
+            'annonce' => 'Une annonce',
+        ],
+        'descriptions' => [
+            'actualite' => 'Un article : ce que fait l\'association, un compte rendu, un témoignage.',
+            'annonce' => 'Une information courte et pratique : fermeture, changement d\'horaire, appel aux bénévoles.',
+        ],
+    ]);
 
-    <label for="champ_image">Image de couverture (JPEG, PNG ou WebP, 5 Mo maximum)</label>
-    <?php if ($actualite !== null && !empty($actualite['image_chemin'])): ?>
-        <p>
-            <img src="/<?= htmlspecialchars($actualite['image_chemin'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="admin-image-actuelle">
-            <label class="admin-case">
-                <input type="checkbox" name="supprimer_image" value="1"> Retirer cette image
-            </label>
-        </p>
-    <?php endif; ?>
-    <input type="file" id="champ_image" name="image" accept="image/jpeg,image/png,image/webp">
-    <?php if (!empty($erreurs['image'])): ?>
-        <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['image'], ENT_QUOTES, 'UTF-8') ?></p>
-    <?php endif; ?>
+    champ('editeur', [
+        'nom' => 'contenu',
+        'libelle' => 'Contenu',
+        'valeur' => $valeurs['contenu'],
+        'erreurs' => $erreurs,
+        'obligatoire' => true,
+        'aide' => 'Utilisez les boutons ci-dessous pour mettre en forme votre texte.',
+    ]);
 
-    <label for="champ_image_alt">Texte alternatif de l'image (décrit l'image pour les personnes malvoyantes ; obligatoire si une image est présente)</label>
-    <input type="text" id="champ_image_alt" name="image_alt" value="<?= htmlspecialchars($valeurs['image_alt'], ENT_QUOTES, 'UTF-8') ?>">
-    <?php if (!empty($erreurs['image_alt'])): ?>
-        <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['image_alt'], ENT_QUOTES, 'UTF-8') ?></p>
-    <?php endif; ?>
+    champ('image', [
+        'nom' => 'image',
+        'libelle' => 'Image de couverture',
+        'erreurs' => $erreurs,
+        'aide' => 'Formats acceptés : JPEG, PNG ou WebP, 5 Mo maximum. '
+            . 'L\'image est automatiquement redimensionnée, vous n\'avez rien à faire.',
+        'image_actuelle' => $actualite['image_chemin'] ?? null,
+        'valeur_alt' => $valeurs['image_alt'],
+    ]);
 
-    <fieldset class="admin-statuts">
-        <legend>Statut</legend>
-        <label class="admin-case">
-            <input type="radio" name="statut" value="brouillon" <?= $valeurs['statut'] === 'brouillon' ? 'checked' : '' ?>>
-            Brouillon (non visible du public)
-        </label>
-        <label class="admin-case">
-            <input type="radio" name="statut" value="publie" <?= $valeurs['statut'] === 'publie' ? 'checked' : '' ?>>
-            Publié immédiatement
-        </label>
-        <label class="admin-case">
-            <input type="radio" name="statut" value="programme" <?= $valeurs['statut'] === 'programme' ? 'checked' : '' ?>>
-            Programmé à une date précise
-        </label>
-        <?php if (!empty($erreurs['statut'])): ?>
-            <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['statut'], ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-    </fieldset>
+    champ('choix', [
+        'nom' => 'statut',
+        'libelle' => 'Mise en ligne',
+        'valeur' => $valeurs['statut'],
+        'erreurs' => $erreurs,
+        'options' => [
+            'brouillon' => 'Garder en brouillon',
+            'publie' => 'Mettre en ligne maintenant',
+            'programme' => 'Mettre en ligne à une date choisie',
+        ],
+        'descriptions' => [
+            'brouillon' => 'Personne d\'autre que l\'équipe ne le verra.',
+            'publie' => 'Visible immédiatement par tout le monde sur le site.',
+            'programme' => 'Apparaîtra tout seul sur le site à la date indiquée ci-dessous.',
+        ],
+    ]);
 
-    <label for="champ_publie_le">Date de publication programmée (uniquement si « Programmé » est coché ci-dessus)</label>
-    <input type="datetime-local" id="champ_publie_le" name="publie_le" value="<?= htmlspecialchars($valeurs['publie_le'], ENT_QUOTES, 'UTF-8') ?>">
-    <?php if (!empty($erreurs['publie_le'])): ?>
-        <p class="admin-message admin-message--erreur"><?= htmlspecialchars($erreurs['publie_le'], ENT_QUOTES, 'UTF-8') ?></p>
-    <?php endif; ?>
+    champ('date', [
+        'nom' => 'publie_le',
+        'libelle' => 'Date de mise en ligne',
+        'valeur' => $valeurs['publie_le'],
+        'erreurs' => $erreurs,
+        'aide' => 'À remplir uniquement si vous avez choisi « Mettre en ligne à une date choisie ».',
+    ]);
+    ?>
 
     <div class="admin-formulaire__actions">
         <button type="submit" class="admin-bouton admin-bouton--principal">Enregistrer</button>

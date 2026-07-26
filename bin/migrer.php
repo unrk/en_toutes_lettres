@@ -13,6 +13,7 @@ if (PHP_SAPI !== 'cli') {
 
 require __DIR__ . '/../app/bootstrap.php';
 
+use App\Core\Adresse;
 use App\Core\Database;
 
 $dossierMigrations = __DIR__ . '/../migrations';
@@ -57,4 +58,39 @@ if ($nombreAppliquees === 0) {
     echo "Rien à faire : toutes les migrations sont déjà appliquées.\n";
 } else {
     echo "{$nombreAppliquees} migration(s) appliquée(s) avec succès.\n";
+}
+
+// Complète les adresses web manquantes.
+//
+// Une adresse se calcule à partir d'un titre accentué : impossible à faire
+// correctement en SQL pur, donc c'est fait ici. C'est volontairement intégré à
+// ce script plutôt que confié à une seconde commande : oublier de la lancer
+// laisserait des fiches sans adresse, donc inaccessibles sur le site public.
+// Sans effet si tout est déjà en ordre, et relançable sans risque.
+$tablesAvecAdresse = ['actualites', 'activites', 'evenements', 'pages', 'galeries'];
+$adressesCompletees = 0;
+
+foreach ($tablesAvecAdresse as $table) {
+    $tableExiste = $connexion->query("SHOW TABLES LIKE " . $connexion->quote($table))->fetchColumn();
+    if ($tableExiste === false) {
+        continue;
+    }
+
+    $sansAdresse = $connexion
+        ->query("SELECT id, titre FROM {$table} WHERE adresse IS NULL OR adresse = ''")
+        ->fetchAll();
+
+    foreach ($sansAdresse as $ligne) {
+        $adresse = Adresse::unique($ligne['titre'], $table, (int) $ligne['id']);
+
+        $miseAJour = $connexion->prepare("UPDATE {$table} SET adresse = :adresse WHERE id = :id");
+        $miseAJour->execute(['adresse' => $adresse, 'id' => $ligne['id']]);
+
+        echo "  Adresse « {$adresse} » attribuée à {$table} #{$ligne['id']}.\n";
+        $adressesCompletees++;
+    }
+}
+
+if ($adressesCompletees > 0) {
+    echo "{$adressesCompletees} adresse(s) web complétée(s).\n";
 }

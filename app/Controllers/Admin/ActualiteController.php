@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
-use App\Core\AssainisseurHtml;
+use App\Core\Adresse;
 use App\Core\Auth;
+use App\Core\ChampImage;
 use App\Core\Csrf;
 use App\Core\NotFoundException;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\TeleversementImage;
+use App\Core\Validateur;
 use App\Repositories\ActualiteRepository;
-use DateTime;
-use InvalidArgumentException;
 
 final class ActualiteController extends ControleurAdmin
 {
-    private const STATUTS_VALIDES = ['brouillon', 'publie', 'programme'];
+    private const STATUTS = ['brouillon', 'publie', 'programme'];
+    private const TYPES = ['actualite', 'annonce'];
 
     public function liste(Request $requete): void
     {
         Response::html(
             'admin/actualites/liste',
-            ['titre' => 'Actualités', 'actualites' => ActualiteRepository::tous()],
+            ['titre' => 'Actualités et annonces', 'actualites' => ActualiteRepository::tous()],
             200,
             'admin/gabarit'
         );
@@ -31,46 +32,27 @@ final class ActualiteController extends ControleurAdmin
 
     public function creer(Request $requete): void
     {
-        Response::html(
-            'admin/actualites/formulaire',
-            [
-                'titre' => 'Nouvelle actualité',
-                'actualite' => null,
-                'erreurs' => [],
-                'valeurs' => [
-                    'titre' => '',
-                    'contenu' => '',
-                    'statut' => 'brouillon',
-                    'publie_le' => '',
-                    'image_alt' => '',
-                ],
-            ],
-            200,
-            'admin/gabarit'
-        );
+        $this->afficherFormulaire('Ajouter une actualité', null, $this->valeursVides(), []);
     }
 
     public function enregistrerNouvelle(Request $requete): void
     {
-        $resultat = $this->validerFormulaire($requete, null);
+        $resultat = $this->valider($requete, null);
 
         if ($resultat['erreurs'] !== []) {
-            Response::html(
-                'admin/actualites/formulaire',
-                [
-                    'titre' => 'Nouvelle actualité',
-                    'actualite' => null,
-                    'erreurs' => $resultat['erreurs'],
-                    'valeurs' => $resultat['valeurs'],
-                ],
-                422,
-                'admin/gabarit'
+            $this->afficherFormulaire(
+                'Ajouter une actualité',
+                null,
+                $resultat['valeurs'],
+                $resultat['erreurs'],
+                422
             );
             return;
         }
 
         ActualiteRepository::creer([
             ...$resultat['donnees'],
+            'adresse' => Adresse::unique($resultat['donnees']['titre'], 'actualites'),
             'auteur_id' => Auth::utilisateur()['id'],
         ]);
 
@@ -79,63 +61,43 @@ final class ActualiteController extends ControleurAdmin
 
     public function modifier(Request $requete, string $id): void
     {
-        $actualite = ActualiteRepository::trouve((int) $id);
+        $actualite = $this->trouverOuEchouer($id);
 
-        if ($actualite === null) {
-            throw new NotFoundException("Actualité {$id} introuvable.");
-        }
-
-        Response::html(
-            'admin/actualites/formulaire',
+        $this->afficherFormulaire(
+            'Modifier l\'actualité',
+            $actualite,
             [
-                'titre' => 'Modifier l\'actualité',
-                'actualite' => $actualite,
-                'erreurs' => [],
-                'valeurs' => [
-                    'titre' => $actualite['titre'],
-                    'contenu' => $actualite['contenu'],
-                    'statut' => $actualite['statut'],
-                    'publie_le' => $actualite['publie_le'] !== null
-                        ? str_replace(' ', 'T', substr($actualite['publie_le'], 0, 16))
-                        : '',
-                    'image_alt' => $actualite['image_alt'] ?? '',
-                ],
+                'titre' => $actualite['titre'],
+                'type' => $actualite['type'],
+                'contenu' => $actualite['contenu'],
+                'statut' => $actualite['statut'],
+                'publie_le' => $actualite['publie_le'] ?? '',
+                'image_alt' => $actualite['image_alt'] ?? '',
             ],
-            200,
-            'admin/gabarit'
+            []
         );
     }
 
     public function enregistrerModification(Request $requete, string $id): void
     {
-        $actualite = ActualiteRepository::trouve((int) $id);
-
-        if ($actualite === null) {
-            throw new NotFoundException("Actualité {$id} introuvable.");
-        }
-
-        $resultat = $this->validerFormulaire($requete, $actualite);
+        $actualite = $this->trouverOuEchouer($id);
+        $resultat = $this->valider($requete, $actualite);
 
         if ($resultat['erreurs'] !== []) {
-            Response::html(
-                'admin/actualites/formulaire',
-                [
-                    'titre' => 'Modifier l\'actualité',
-                    'actualite' => $actualite,
-                    'erreurs' => $resultat['erreurs'],
-                    'valeurs' => $resultat['valeurs'],
-                ],
-                422,
-                'admin/gabarit'
+            $this->afficherFormulaire(
+                'Modifier l\'actualité',
+                $actualite,
+                $resultat['valeurs'],
+                $resultat['erreurs'],
+                422
             );
             return;
         }
 
+        // L'adresse n'est volontairement pas recalculée : renommer une fiche ne
+        // doit pas casser les liens déjà partagés vers elle.
         ActualiteRepository::modifier((int) $id, $resultat['donnees']);
-
-        if ($resultat['ancienneImageASupprimer'] !== null) {
-            TeleversementImage::supprimer($resultat['ancienneImageASupprimer']);
-        }
+        TeleversementImage::supprimer($resultat['ancienne_image']);
 
         Response::rediriger('/admin/actualites');
     }
@@ -159,11 +121,7 @@ final class ActualiteController extends ControleurAdmin
 
     public function apercu(Request $requete, string $id): void
     {
-        $actualite = ActualiteRepository::trouve((int) $id);
-
-        if ($actualite === null) {
-            throw new NotFoundException("Actualité {$id} introuvable.");
-        }
+        $actualite = $this->trouverOuEchouer($id);
 
         Response::html(
             'admin/actualites/apercu',
@@ -173,112 +131,123 @@ final class ActualiteController extends ControleurAdmin
         );
     }
 
+    private function trouverOuEchouer(string $id): array
+    {
+        $actualite = ActualiteRepository::trouve((int) $id);
+
+        if ($actualite === null) {
+            throw new NotFoundException("Actualité {$id} introuvable.");
+        }
+
+        return $actualite;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function valeursVides(): array
+    {
+        return [
+            'titre' => '',
+            'type' => 'actualite',
+            'contenu' => '',
+            'statut' => 'brouillon',
+            'publie_le' => '',
+            'image_alt' => '',
+        ];
+    }
+
+    private function afficherFormulaire(
+        string $titrePage,
+        ?array $actualite,
+        array $valeurs,
+        array $erreurs,
+        int $codeStatut = 200,
+    ): void {
+        Response::html(
+            'admin/actualites/formulaire',
+            [
+                'titre' => $titrePage,
+                'actualite' => $actualite,
+                'valeurs' => $valeurs,
+                'erreurs' => $erreurs,
+            ],
+            $codeStatut,
+            'admin/gabarit'
+        );
+    }
+
     /**
      * @return array{
      *     erreurs: array<string, string>,
      *     valeurs: array<string, string>,
-     *     donnees?: array{titre: string, contenu: string, image_chemin: ?string, image_alt: ?string, statut: string, publie_le: ?string},
-     *     ancienneImageASupprimer?: ?string
+     *     donnees?: array<string, mixed>,
+     *     ancienne_image?: ?string
      * }
      */
-    private function validerFormulaire(Request $requete, ?array $actualiteExistante): array
+    private function valider(Request $requete, ?array $existante): array
     {
         $valeurs = [
             'titre' => trim((string) $requete->post('titre', '')),
+            'type' => (string) $requete->post('type', 'actualite'),
             'contenu' => (string) $requete->post('contenu', ''),
             'statut' => (string) $requete->post('statut', 'brouillon'),
             'publie_le' => trim((string) $requete->post('publie_le', '')),
             'image_alt' => trim((string) $requete->post('image_alt', '')),
         ];
 
-        $erreurs = [];
-
         if (!Csrf::valide($requete->post('jeton_csrf'))) {
-            $erreurs['general'] = "Votre session a expiré, merci de réessayer.";
-            return ['erreurs' => $erreurs, 'valeurs' => $valeurs];
+            return [
+                'erreurs' => ['general' => "Votre session a expiré. Vérifiez vos informations puis réessayez."],
+                'valeurs' => $valeurs,
+            ];
         }
 
-        if (mb_strlen($valeurs['titre']) < 3 || mb_strlen($valeurs['titre']) > 200) {
-            $erreurs['titre'] = 'Le titre doit contenir entre 3 et 200 caractères.';
-        }
+        $v = new Validateur();
 
-        $contenuNettoye = AssainisseurHtml::nettoyer($valeurs['contenu']);
-        if (trim(strip_tags($contenuNettoye)) === '') {
-            $erreurs['contenu'] = 'Le contenu ne peut pas être vide.';
-        }
+        $titre = $v->texte('titre', $valeurs['titre'], 'Le titre', min: 3, max: 200);
+        $type = $v->choix('type', $valeurs['type'], 'Le type', self::TYPES, 'actualite');
+        $contenu = $v->html('contenu', $valeurs['contenu'], 'Le contenu');
+        $statut = $v->choix('statut', $valeurs['statut'], 'Le statut', self::STATUTS, 'brouillon');
 
-        if (!in_array($valeurs['statut'], self::STATUTS_VALIDES, true)) {
-            $erreurs['statut'] = 'Statut invalide.';
-        }
+        $publieLe = match ($statut) {
+            'programme' => $v->dateHeure(
+                'publie_le',
+                $valeurs['publie_le'],
+                'La date de mise en ligne',
+                obligatoire: true,
+                doitEtreFuture: true
+            ),
+            'publie' => $existante['publie_le'] ?? date('Y-m-d H:i:s'),
+            default => null,
+        };
 
-        $publieLe = null;
-        if ($valeurs['statut'] === 'programme') {
-            if ($valeurs['publie_le'] === '') {
-                $erreurs['publie_le'] = 'Choisissez une date de publication.';
-            } else {
-                $date = DateTime::createFromFormat('Y-m-d\TH:i', $valeurs['publie_le'])
-                    ?: DateTime::createFromFormat('Y-m-d\TH:i:s', $valeurs['publie_le']);
+        $image = ChampImage::traiter(
+            'image',
+            $existante['image_chemin'] ?? null,
+            $existante['image_alt'] ?? null,
+            'actualites',
+            $v,
+            $requete
+        );
 
-                if ($date === false) {
-                    $erreurs['publie_le'] = 'Date de publication invalide.';
-                } elseif ($date <= new DateTime()) {
-                    $erreurs['publie_le'] = 'La date de programmation doit être dans le futur.';
-                } else {
-                    $publieLe = $date->format('Y-m-d H:i:s');
-                }
-            }
-        } elseif ($valeurs['statut'] === 'publie') {
-            $publieLe = (new DateTime())->format('Y-m-d H:i:s');
-        }
-
-        if ($erreurs !== []) {
-            return ['erreurs' => $erreurs, 'valeurs' => $valeurs];
-        }
-
-        // Gestion de l'image : on ne touche au système de fichiers qu'une fois
-        // les autres champs validés, pour ne jamais enregistrer une image
-        // orpheline si le formulaire est de toute façon invalide.
-        $imageChemin = $actualiteExistante['image_chemin'] ?? null;
-        $ancienneImageASupprimer = null;
-        $fichierImage = $_FILES['image'] ?? null;
-        $nouvelleImageEnvoyee = $fichierImage !== null
-            && ($fichierImage['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
-        $suppressionDemandee = $requete->post('supprimer_image') === '1';
-
-        if ($nouvelleImageEnvoyee) {
-            try {
-                $resultatImage = TeleversementImage::traiter($fichierImage, 'actualites');
-            } catch (InvalidArgumentException $exception) {
-                $erreurs['image'] = $exception->getMessage();
-                return ['erreurs' => $erreurs, 'valeurs' => $valeurs];
-            }
-
-            if ($imageChemin !== null) {
-                $ancienneImageASupprimer = $imageChemin;
-            }
-            $imageChemin = $resultatImage['chemin'];
-        } elseif ($suppressionDemandee) {
-            $ancienneImageASupprimer = $imageChemin;
-            $imageChemin = null;
-        }
-
-        if ($imageChemin !== null && $valeurs['image_alt'] === '') {
-            $erreurs['image_alt'] = "Le texte alternatif de l'image est obligatoire.";
-            return ['erreurs' => $erreurs, 'valeurs' => $valeurs];
+        if ($v->aDesErreurs()) {
+            return ['erreurs' => $v->erreurs(), 'valeurs' => $valeurs];
         }
 
         return [
             'erreurs' => [],
             'valeurs' => $valeurs,
             'donnees' => [
-                'titre' => $valeurs['titre'],
-                'contenu' => $contenuNettoye,
-                'image_chemin' => $imageChemin,
-                'image_alt' => $imageChemin !== null ? $valeurs['image_alt'] : null,
-                'statut' => $valeurs['statut'],
+                'titre' => $titre,
+                'type' => $type,
+                'contenu' => $contenu,
+                'image_chemin' => $image['chemin'],
+                'image_alt' => $image['alt'],
+                'statut' => $statut,
                 'publie_le' => $publieLe,
             ],
-            'ancienneImageASupprimer' => $ancienneImageASupprimer,
+            'ancienne_image' => $image['ancienne_a_supprimer'],
         ];
     }
 }

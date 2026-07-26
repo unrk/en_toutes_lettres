@@ -17,6 +17,20 @@ final class Auth
         ];
     }
 
+    /**
+     * Met à jour les informations gardées en session à partir de la base, sans
+     * régénérer l'identifiant de session : la personne reste connectée, mais
+     * un changement de rôle ou de nom prend effet immédiatement.
+     */
+    public static function rafraichir(array $utilisateur): void
+    {
+        $_SESSION['utilisateur'] = [
+            'id' => $utilisateur['id'],
+            'nom' => $utilisateur['nom'],
+            'role' => $utilisateur['role'],
+        ];
+    }
+
     public static function deconnecte(): void
     {
         $_SESSION = [];

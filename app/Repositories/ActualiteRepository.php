@@ -11,7 +11,8 @@ final class ActualiteRepository
     public static function tous(): array
     {
         $requete = Database::connexion()->query(
-            'SELECT a.id, a.titre, a.statut, a.publie_le, a.image_chemin, a.cree_le, u.nom AS auteur_nom
+            'SELECT a.id, a.titre, a.type, a.statut, a.publie_le, a.image_chemin, a.cree_le,
+                    u.nom AS auteur_nom
              FROM actualites a
              INNER JOIN utilisateurs u ON u.id = a.auteur_id
              ORDER BY a.cree_le DESC'
@@ -23,7 +24,8 @@ final class ActualiteRepository
     public static function trouve(int $id): ?array
     {
         $requete = Database::connexion()->prepare(
-            'SELECT id, titre, contenu, image_chemin, image_alt, statut, publie_le, auteur_id
+            'SELECT id, titre, type, adresse, contenu, image_chemin, image_alt,
+                    statut, publie_le, auteur_id
              FROM actualites
              WHERE id = :id
              LIMIT 1'
@@ -36,16 +38,20 @@ final class ActualiteRepository
     }
 
     /**
-     * @param array{titre: string, contenu: string, image_chemin: ?string, image_alt: ?string, statut: string, publie_le: ?string, auteur_id: int} $donnees
+     * @param array<string, mixed> $donnees
      */
     public static function creer(array $donnees): int
     {
         $requete = Database::connexion()->prepare(
-            'INSERT INTO actualites (titre, contenu, image_chemin, image_alt, statut, publie_le, auteur_id)
-             VALUES (:titre, :contenu, :image_chemin, :image_alt, :statut, :publie_le, :auteur_id)'
+            'INSERT INTO actualites
+                (titre, type, adresse, contenu, image_chemin, image_alt, statut, publie_le, auteur_id)
+             VALUES
+                (:titre, :type, :adresse, :contenu, :image_chemin, :image_alt, :statut, :publie_le, :auteur_id)'
         );
         $requete->execute([
             'titre' => $donnees['titre'],
+            'type' => $donnees['type'],
+            'adresse' => $donnees['adresse'],
             'contenu' => $donnees['contenu'],
             'image_chemin' => $donnees['image_chemin'],
             'image_alt' => $donnees['image_alt'],
@@ -58,13 +64,17 @@ final class ActualiteRepository
     }
 
     /**
-     * @param array{titre: string, contenu: string, image_chemin: ?string, image_alt: ?string, statut: string, publie_le: ?string} $donnees
+     * L'adresse n'est jamais modifiée : elle est figée à la création pour ne
+     * pas casser les liens déjà partagés.
+     *
+     * @param array<string, mixed> $donnees
      */
     public static function modifier(int $id, array $donnees): void
     {
         $requete = Database::connexion()->prepare(
             'UPDATE actualites
              SET titre = :titre,
+                 type = :type,
                  contenu = :contenu,
                  image_chemin = :image_chemin,
                  image_alt = :image_alt,
@@ -74,6 +84,7 @@ final class ActualiteRepository
         );
         $requete->execute([
             'titre' => $donnees['titre'],
+            'type' => $donnees['type'],
             'contenu' => $donnees['contenu'],
             'image_chemin' => $donnees['image_chemin'],
             'image_alt' => $donnees['image_alt'],
