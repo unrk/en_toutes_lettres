@@ -161,6 +161,50 @@ $v->email('e', 'pasunemail', "L'adresse e-mail");
 verifie('e-mail invalide détecté', isset($v->erreurs()['e']), true);
 
 // ---------------------------------------------------------------------------
+titre('Affichage des champs de formulaire');
+
+// Ces vérifications existent à cause d'un vrai bug : la fonction champ() avait
+// un paramètre nommé $options, si bien que le réglage « options » du champ de
+// type « choix » n'arrivait jamais jusqu'au partiel. Tous les formulaires
+// comportant un statut ou un rôle étaient cassés, sans que rien ne le signale
+// tant qu'on ne regardait pas la page dans un navigateur.
+function rendu(string $type, array $reglages): string
+{
+    ob_start();
+    champ($type, $reglages);
+
+    return ob_get_clean();
+}
+
+$sortie = rendu('choix', [
+    'nom' => 'statut',
+    'libelle' => 'Mise en ligne',
+    'valeur' => 'publie',
+    'options' => ['brouillon' => 'Garder en brouillon', 'publie' => 'Mettre en ligne'],
+]);
+
+verifie('choix : le libellé du groupe est affiché', str_contains($sortie, 'Mise en ligne'), true);
+verifie('choix : la première option est affichée', str_contains($sortie, 'Garder en brouillon'), true);
+verifie('choix : la seconde option est affichée', str_contains($sortie, 'Mettre en ligne'), true);
+verifie('choix : deux boutons radio sont produits', substr_count($sortie, 'type="radio"'), 2);
+verifie('choix : la valeur courante est cochée', (bool) preg_match('/value="publie"\s*checked/', $sortie), true);
+verifie('choix : aucun tableau n\'a fuité dans le HTML', str_contains($sortie, 'Array'), false);
+
+$sortie = rendu('texte', [
+    'nom' => 'titre',
+    'libelle' => 'Titre',
+    'valeur' => 'Café & <lecture>',
+    'erreurs' => ['titre' => 'Le titre est obligatoire.'],
+]);
+
+verifie('texte : la valeur saisie est réaffichée et échappée', str_contains($sortie, 'Caf&eacute; &amp; &lt;lecture&gt;') || str_contains($sortie, 'Café &amp; &lt;lecture&gt;'), true);
+verifie('texte : le message d\'erreur est affiché', str_contains($sortie, 'Le titre est obligatoire.'), true);
+verifie('texte : le champ est signalé en erreur', str_contains($sortie, 'aria-invalid="true"'), true);
+
+$sortie = rendu('date', ['nom' => 'debut', 'libelle' => 'Début', 'valeur' => '2026-09-15 14:30:00']);
+verifie('date : le format base de données est converti pour le navigateur', str_contains($sortie, 'value="2026-09-15T14:30"'), true);
+
+// ---------------------------------------------------------------------------
 echo "\n" . str_repeat('-', 60) . "\n";
 
 if ($echecs === 0) {

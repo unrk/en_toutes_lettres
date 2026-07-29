@@ -47,9 +47,9 @@ function e(?string $valeur): string
  * message d'erreur) dans chaque formulaire : une correction d'ergonomie faite
  * ici profite à toutes les rubriques d'un coup.
  */
-function champ(string $typeDeChamp, array $options = []): void
+function champ(string $typeDeChamp, array $reglagesDuChamp = []): void
 {
-    $options += [
+    $reglagesDuChamp += [
         'nom' => '',
         'libelle' => '',
         'valeur' => '',
@@ -58,10 +58,15 @@ function champ(string $typeDeChamp, array $options = []): void
         'obligatoire' => false,
     ];
 
-    // Noms volontairement peu banals : extract() ci-dessous ne doit pas pouvoir
-    // les écraser avec une option portant le même nom.
+    // Les variables locales portent des noms volontairement inhabituels : en
+    // mode EXTR_SKIP, extract() refuse d'écraser une variable existante, donc
+    // un réglage qui porterait le même nom qu'une variable d'ici serait
+    // silencieusement ignoré. C'est exactement ce qui est arrivé au réglage
+    // « options » du champ de type « choix », quand ce paramètre s'appelait
+    // encore $options : le partiel recevait le tableau de réglages complet à la
+    // place de la liste des choix.
     $cheminPartielDuChamp = __DIR__ . '/../templates/admin/champs/' . $typeDeChamp . '.php';
-    extract($options, EXTR_SKIP);
+    extract($reglagesDuChamp, EXTR_SKIP);
 
     require $cheminPartielDuChamp;
 }
@@ -71,10 +76,11 @@ function champ(string $typeDeChamp, array $options = []): void
  * Les variables passées ne vivent que le temps de l'appel : impossible qu'une
  * valeur d'un tour de boucle déborde sur le suivant.
  */
-function partiel(string $nomDuPartiel, array $options = []): void
+function partiel(string $nomDuPartiel, array $reglagesDuPartiel = []): void
 {
+    // Même précaution que dans champ() ci-dessus sur le nom des variables locales.
     $cheminDuPartiel = __DIR__ . '/../templates/admin/partiels/' . $nomDuPartiel . '.php';
-    extract($options, EXTR_SKIP);
+    extract($reglagesDuPartiel, EXTR_SKIP);
 
     require $cheminDuPartiel;
 }
