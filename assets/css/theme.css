@@ -1,0 +1,128 @@
+/* =====================================================================
+   THÈME DU SITE — LES COULEURS
+   ---------------------------------------------------------------------
+   Ce fichier sert à changer facilement les couleurs du site.
+
+   Comment faire :
+   1. Repérez la ligne de la couleur à changer (chaque ligne est expliquée).
+   2. Remplacez le code couleur (par exemple #0e7b67) par le vôtre.
+   3. Enregistrez, puis mettez le site en ligne comme d'habitude.
+
+   Un code couleur commence par # suivi de 6 caractères (chiffres et
+   lettres de A à F). Pour trouver un code, cherchez « nuancier couleur »
+   ou « color picker » sur internet, choisissez une couleur et copiez son
+   code (au format HEX, celui qui commence par #).
+
+   Astuce : ne changez QUE ce qui est entre guillemets/après « : » et
+   avant le « ; ». Ne touchez pas au reste.
+   ===================================================================== */
+
+:root {
+
+    /* ---------------------------------------------------------------
+       1. COULEURS PRINCIPALES DE L'ASSOCIATION
+       --------------------------------------------------------------- */
+
+    /* Couleur principale (le vert) : titres de sections, liens, accents. */
+    --couleur-accent: #0e7b67;
+
+    /* Version plus foncée de la couleur principale (survol des liens,
+       textes sur fond clair). Prenez un ton un peu plus sombre. */
+    --couleur-accent-foncee: #085849;
+
+    /* Couleur secondaire (l'orange) : boutons d'action « Adhérer »,
+       « Faire un don », mises en avant. */
+    --couleur-secondaire: #f28f3b;
+
+    /* Version plus foncée de la couleur secondaire (contour et survol
+       des boutons d'action). */
+    --couleur-secondaire-foncee: #d97825;
+
+
+    /* ---------------------------------------------------------------
+       2. TEXTES ET FONDS
+       --------------------------------------------------------------- */
+
+    /* Couleur du texte courant (presque noir, agréable à lire). */
+    --couleur-texte: #1f2624;
+
+    /* Couleur des textes secondaires (dates, mentions discrètes, gris). */
+    --couleur-texte-doux: #5f655f;
+
+    /* Fond général de la page (blanc légèrement chaud). */
+    --couleur-fond: #fffdf8;
+
+    /* Fond des cartes et encadrés (blanc). */
+    --couleur-carte: #ffffff;
+
+    /* Couleur des fines bordures et séparateurs (gris/beige clair). */
+    --couleur-trait: #d7d0c4;
+
+    /* Fond du bas de page (le « pied » du site). */
+    --couleur-pied: #f3eee5;
+
+
+    /* ---------------------------------------------------------------
+       3. AMBIANCES (grandes zones colorées)
+       --------------------------------------------------------------- */
+
+    /* La grande bannière d'accueil (le « hero »). C'est un dégradé :
+       il passe de la première couleur à la seconde, du clair au foncé. */
+    --hero-debut: #0b6b59;
+    --hero-fin: #15342f;
+
+    /* Petite mention au-dessus du grand titre d'accueil (ton chaud clair). */
+    --hero-surtitre: #ffdcb7;
+
+    /* Les sections légèrement teintées (fond très pâle et sa bordure). */
+    --section-douce-fond: #f5faf8;
+    --section-douce-bord: #dceee8;
+
+    /* Le bandeau « Soutenir l'association » : dégradé chaud (orangé). */
+    --soutien-debut: #ffe6cc;
+    --soutien-fin: #ffd2ac;
+
+    /* Les encadrés d'information / d'attente (fond crème et bordure). */
+    --info-fond: #fff4e5;
+    --info-bord: #f3ce9f;
+
+
+    /* ===============================================================
+       4. RÉGLAGES AVANCÉS — à ne modifier qu'en cas de besoin
+       =============================================================== */
+
+    /* Arrondi des coins (cartes, boutons, encadrés). Plus la valeur est
+       grande, plus les coins sont ronds. Ex. 0.5rem = coins discrets. */
+    --rayon: 1rem;
+
+    /* Ombre portée sous les cartes (effet de relief léger). */
+    --ombre-legere: 0 10px 25px rgba(30, 36, 34, 0.08);
+
+
+    /* ---------------------------------------------------------------
+       Boutons d'action Bootstrap — reprennent la couleur secondaire.
+       (Généré automatiquement à partir des couleurs ci-dessus :
+        normalement rien à changer ici.)
+       --------------------------------------------------------------- */
+    --bs-warning: var(--couleur-secondaire);
+    --bs-warning-rgb: 242, 143, 59;
+    --bs-link-color: var(--couleur-accent-foncee);
+    --bs-link-hover-color: var(--couleur-accent);
+}
+
+/* Boutons « orange » (Adhérer, Faire un don…) : couleur pilotée par le
+   thème ci-dessus. Ne pas modifier — ajustez plutôt --couleur-secondaire. */
+.btn-warning {
+    --bs-btn-bg: var(--couleur-secondaire);
+    --bs-btn-border-color: var(--couleur-secondaire-foncee);
+    --bs-btn-hover-bg: var(--couleur-secondaire-foncee);
+    --bs-btn-hover-border-color: var(--couleur-secondaire-foncee);
+    --bs-btn-active-bg: var(--couleur-secondaire-foncee);
+    --bs-btn-active-border-color: var(--couleur-secondaire-foncee);
+    --bs-btn-color: #1f1308;
+    --bs-btn-hover-color: #1f1308;
+    --bs-btn-active-color: #1f1308;
+    --bs-btn-disabled-bg: var(--couleur-secondaire);
+    --bs-btn-disabled-border-color: var(--couleur-secondaire-foncee);
+    font-weight: 600;
+}
