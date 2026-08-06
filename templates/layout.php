@@ -24,33 +24,38 @@ $liensReseaux = config('liens_reseaux_sociaux', []);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($titrePage, ENT_QUOTES, 'UTF-8') ?></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/theme.css?v=20260806">
+    <link rel="stylesheet" href="/assets/css/style.css?v=20260806">
 </head>
 <body class="site-corps">
     <a href="#contenu-principal" class="site-lien-evitement">Aller au contenu principal</a>
 
     <header class="site-entete shadow-sm">
-        <div class="site-entete__barre container-xl">
-            <a href="/" class="site-entete__logo text-decoration-none">En Toutes Lettres</a>
-            <a href="/adhesion-et-dons" class="site-entete__action btn btn-warning fw-semibold">Adhérer ou soutenir</a>
-        </div>
+        <nav class="navbar navbar-expand-lg site-navbar container-xl py-2" aria-label="Navigation principale">
+            <a href="/" class="site-entete__logo text-decoration-none navbar-brand m-0">En Toutes Lettres</a>
 
-        <details class="site-menu container-xl">
-            <summary class="site-menu__bouton">Menu</summary>
-            <nav class="site-menu__contenu" aria-label="Navigation principale">
-                <ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Ouvrir ou fermer le menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php foreach ($navigation as $lien): ?>
-                        <li>
+                        <li class="nav-item">
                             <a href="<?= e($lien['url']) ?>"
+                               class="nav-link<?= $cheminActuel === $lien['url'] ? ' active' : '' ?>"
                                <?= $cheminActuel === $lien['url'] ? 'aria-current="page"' : '' ?>>
                                 <?= e($lien['libelle']) ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
-            </nav>
-        </details>
+
+                <a href="/adhesion-et-dons" class="site-entete__action btn btn-warning fw-semibold">Adhérer ou soutenir</a>
+            </div>
+        </nav>
     </header>
 
     <main id="contenu-principal" class="site-contenu container-xl">
@@ -88,6 +93,6 @@ $liensReseaux = config('liens_reseaux_sociaux', []);
         <p class="site-pied__copyright container-xl">&copy; <?= date('Y') ?> En Toutes Lettres — Noisy-le-Sec</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>

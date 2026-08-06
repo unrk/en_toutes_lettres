@@ -1,14 +1,7 @@
+/* Les couleurs du site se règlent dans le fichier « theme.css ».
+   Ce fichier-ci gère la mise en page ; il réutilise les couleurs du thème. */
 :root {
-    --couleur-texte: #1f2624;
-    --couleur-fond: #fffdf8;
-    --couleur-accent: #0e7b67;
-    --couleur-accent-foncee: #085849;
-    --couleur-secondaire: #f28f3b;
-    --couleur-trait: #d7d0c4;
-    --couleur-carte: #ffffff;
-    --ombre-legere: 0 10px 25px rgba(30, 36, 34, 0.08);
     --espacement: 1rem;
-    --rayon: 1rem;
 }
 
 * {
@@ -153,7 +146,7 @@
 }
 
 .hero {
-    background: linear-gradient(140deg, #0b6b59 0%, #084f43 55%, #15342f 100%);
+    background: linear-gradient(140deg, var(--hero-debut) 0%, var(--couleur-accent-foncee) 55%, var(--hero-fin) 100%);
     color: #f8f7f5;
     border-radius: 1.1rem;
     box-shadow: var(--ombre-legere);
@@ -176,7 +169,7 @@
     letter-spacing: 0.08em;
     font-weight: 700;
     font-size: 0.78rem;
-    color: #ffdcb7;
+    color: var(--hero-surtitre);
 }
 
 .hero h1 {
@@ -224,14 +217,14 @@
 }
 
 .section--teintee {
-    background-color: #f5faf8;
-    border: 1px solid #dceee8;
+    background-color: var(--section-douce-fond);
+    border: 1px solid var(--section-douce-bord);
     border-radius: var(--rayon);
     padding: 1.1rem;
 }
 
 .section--appel {
-    background: linear-gradient(180deg, #ffe6cc, #ffd2ac);
+    background: linear-gradient(180deg, var(--soutien-debut), var(--soutien-fin));
     border-radius: var(--rayon);
     padding: 1.2rem;
     box-shadow: var(--ombre-legere);
@@ -271,6 +264,18 @@
     border-radius: var(--rayon);
     overflow: hidden;
     box-shadow: var(--ombre-legere);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+@media (hover: hover) {
+    .carte:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(30, 36, 34, 0.14);
+    }
+}
+
+.lien-fleche::after {
+    content: " \2192";
 }
 
 .carte__image {
@@ -323,7 +328,7 @@
 
 .actu-ligne__meta {
     margin: 0.3rem 0;
-    color: #5f655f;
+    color: var(--couleur-texte-doux);
     font-size: 0.95rem;
 }
 
@@ -376,8 +381,8 @@
 
 .etat-vide,
 .etat-attente {
-    background-color: #fff4e5;
-    border: 1px solid #f3ce9f;
+    background-color: var(--info-fond);
+    border: 1px solid var(--info-bord);
     border-radius: 0.75rem;
     padding: 0.8rem;
 }
@@ -400,7 +405,7 @@
 
 .detail__meta {
     margin-bottom: 0.3rem;
-    color: #5f655f;
+    color: var(--couleur-texte-doux);
 }
 
 .detail__chapo {
@@ -476,7 +481,7 @@
 
 .timeline__date {
     margin: 0;
-    color: #0a5041;
+    color: var(--couleur-accent-foncee);
     font-weight: 700;
 }
 
@@ -547,7 +552,7 @@
 .site-pied {
     margin-top: 2.5rem;
     border-top: 1px solid var(--couleur-trait);
-    background-color: #f3eee5;
+    background-color: var(--couleur-pied);
     padding: 1.5rem 1rem;
 }
 
