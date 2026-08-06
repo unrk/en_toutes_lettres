@@ -23,10 +23,7 @@ $actions = [
 ?>
 <header class="entete-page">
     <h1>Adhésion, dons et inscriptions</h1>
-    <p>
-        Les paiements sont traités via HelloAsso. Vous restez sur un parcours
-        simple et sécurisé, sans création de compte obligatoire.
-    </p>
+    <p>Paiements sécurisés via HelloAsso, sans création de compte.</p>
     <img src="<?= e(image_substitution('soutien-asso', 640, 360)) ?>"
          alt="Illustration de soutien"
          class="entete-page__illustration">
@@ -59,9 +56,5 @@ $actions = [
 
 <section class="section section--teintee">
     <h2>Lettre d'information</h2>
-    <p>
-        La partie inscription newsletter (avec confirmation par e-mail) sera
-        branchée ici. En attendant, contactez l'association pour être ajouté à
-        la liste de diffusion.
-    </p>
+    <p>L'inscription à la newsletter sera bientôt disponible ici. En attendant, contactez l'association pour être ajouté à la liste de diffusion.</p>
 </section>

@@ -10,8 +10,8 @@
                 <p class="hero__surtitre">Association à Noisy-le-Sec</p>
                 <h1>Apprendre, lire, écrire et se rencontrer.</h1>
                 <p class="hero__texte">
-                    En Toutes Lettres accompagne les habitants avec des ateliers de français,
-                    des actions culturelles et un lieu vivant: La Cabane.
+                    Ateliers de français, actions culturelles et un lieu de rencontre à
+                    Noisy-le-Sec.
                 </p>
                 <div class="hero__actions d-flex flex-wrap gap-2">
                     <a href="/activites" class="btn btn-warning fw-semibold">Découvrir nos activités</a>
@@ -120,10 +120,7 @@
 
 <section class="section section--appel p-3 p-md-4">
     <h2>Soutenir l'association</h2>
-    <p>
-        Adhésion, don ponctuel, participation à un événement: toutes les
-        contributions aident à maintenir des activités accessibles à tous.
-    </p>
+    <p>Chaque contribution aide à garder nos activités accessibles à tous.</p>
     <div class="d-flex flex-wrap align-items-center gap-3">
         <a href="/adhesion-et-dons" class="btn btn-warning fw-semibold">Voir les options de soutien</a>
         <img src="<?= e(image_substitution('soutien-asso', 520, 360)) ?>"

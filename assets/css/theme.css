@@ -30,13 +30,13 @@
        textes sur fond clair). Prenez un ton un peu plus sombre. */
     --couleur-accent-foncee: #085849;
 
-    /* Couleur secondaire (l'orange) : boutons d'action « Adhérer »,
-       « Faire un don », mises en avant. */
-    --couleur-secondaire: #f28f3b;
+    /* Couleur secondaire (ambre) : boutons d'action « Adhérer »,
+       « Faire un don », mises en avant. Ton posé, moins vif qu'un orange pur. */
+    --couleur-secondaire: #c9782f;
 
     /* Version plus foncée de la couleur secondaire (contour et survol
        des boutons d'action). */
-    --couleur-secondaire-foncee: #d97825;
+    --couleur-secondaire-foncee: #a55f20;
 
 
     /* ---------------------------------------------------------------
@@ -72,15 +72,15 @@
     --hero-fin: #15342f;
 
     /* Petite mention au-dessus du grand titre d'accueil (ton chaud clair). */
-    --hero-surtitre: #ffdcb7;
+    --hero-surtitre: #ecceaa;
 
     /* Les sections légèrement teintées (fond très pâle et sa bordure). */
     --section-douce-fond: #f5faf8;
     --section-douce-bord: #dceee8;
 
-    /* Le bandeau « Soutenir l'association » : dégradé chaud (orangé). */
-    --soutien-debut: #ffe6cc;
-    --soutien-fin: #ffd2ac;
+    /* Le bandeau « Soutenir l'association » : dégradé chaud et discret. */
+    --soutien-debut: #f1e7d8;
+    --soutien-fin: #e7d7c2;
 
     /* Les encadrés d'information / d'attente (fond crème et bordure). */
     --info-fond: #fff4e5;
@@ -105,7 +105,7 @@
         normalement rien à changer ici.)
        --------------------------------------------------------------- */
     --bs-warning: var(--couleur-secondaire);
-    --bs-warning-rgb: 242, 143, 59;
+    --bs-warning-rgb: 201, 120, 47;
     --bs-link-color: var(--couleur-accent-foncee);
     --bs-link-hover-color: var(--couleur-accent);
 }

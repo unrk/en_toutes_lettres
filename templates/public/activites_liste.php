@@ -3,10 +3,7 @@
 ?>
 <header class="entete-page">
     <h1>Activités</h1>
-    <p>
-        Ateliers de français, actions culturelles, médiation de l'écrit,
-        animations autour des livres: découvrez nos actions à Noisy-le-Sec.
-    </p>
+    <p>Ateliers de français, actions culturelles et animations autour des livres.</p>
 </header>
 
 <?php if ($activites === []): ?>

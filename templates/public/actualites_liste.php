@@ -4,7 +4,7 @@ $anneeCourante = null;
 ?>
 <header class="entete-page">
     <h1>Actualités et annonces</h1>
-    <p>Suivez la vie de l'association, les événements passés et les informations pratiques.</p>
+    <p>La vie de l'association et les informations pratiques.</p>
 </header>
 
 <?php if ($actualites === []): ?>

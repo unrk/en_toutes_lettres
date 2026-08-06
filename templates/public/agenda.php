@@ -4,7 +4,7 @@ $ouvertPasse = false;
 ?>
 <header class="entete-page">
     <h1>Agenda</h1>
-    <p>Retrouvez les prochains rendez-vous et les événements passés de l'association.</p>
+    <p>Nos prochains rendez-vous et les événements passés.</p>
     <img src="<?= e(image_substitution('agenda-evenements', 640, 360)) ?>"
          alt="Illustration d'agenda"
          class="entete-page__illustration">

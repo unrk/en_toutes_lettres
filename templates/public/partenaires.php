@@ -3,7 +3,7 @@
 ?>
 <header class="entete-page">
     <h1>Partenaires</h1>
-    <p>Ces structures soutiennent ou accompagnent les actions d'En Toutes Lettres.</p>
+    <p>Les structures qui soutiennent nos actions.</p>
     <img src="<?= e(image_substitution('partenaires', 640, 360)) ?>"
          alt="Illustration partenaires"
          class="entete-page__illustration">
