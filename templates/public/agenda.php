@@ -5,6 +5,9 @@ $ouvertPasse = false;
 <header class="entete-page">
     <h1>Agenda</h1>
     <p>Retrouvez les prochains rendez-vous et les événements passés de l'association.</p>
+    <img src="/assets/img/placeholders/agenda.svg"
+         alt="Illustration d'agenda"
+         class="entete-page__illustration">
 </header>
 
 <?php if ($evenements === []): ?>
@@ -23,7 +26,7 @@ $ouvertPasse = false;
                 <h2 class="timeline__separateur">Événements passés</h2>
             <?php endif; ?>
 
-            <article class="timeline__item<?= $estAVenir ? '' : ' timeline__item--passe' ?>">
+            <article class="timeline__item<?= $estAVenir ? '' : ' timeline__item--passe' ?> card border-0 shadow-sm">
                 <p class="timeline__date">
                     <?= e($debut->format('d/m/Y')) ?> à <?= e($debut->format('H\\hi')) ?>
                     <?php if ($fin !== null): ?>
@@ -38,6 +41,9 @@ $ouvertPasse = false;
                 <?php if (!empty($evenement['lieu'])): ?>
                     <p class="timeline__lieu"><?= e((string) $evenement['lieu']) ?></p>
                 <?php endif; ?>
+                <img src="<?= !empty($evenement['image_chemin']) ? '/' . e((string) $evenement['image_chemin']) : '/assets/img/placeholders/agenda.svg' ?>"
+                     alt="<?= e((string) ($evenement['image_alt'] ?? ('Illustration de l\'événement ' . $evenement['titre']))) ?>"
+                     class="timeline__image">
                 <div class="timeline__description">
                     <?= (string) $evenement['description'] ?>
                 </div>

@@ -3,21 +3,32 @@
 /** @var array<int, array<string, mixed>> $actualites */
 /** @var array<int, array<string, mixed>> $evenements */
 ?>
-<section class="hero">
-    <p class="hero__surtitre">Association à Noisy-le-Sec</p>
-    <h1>Apprendre, lire, écrire et se rencontrer.</h1>
-    <p class="hero__texte">
-        En Toutes Lettres accompagne les habitants avec des ateliers de français,
-        des actions culturelles et un lieu vivant: La Cabane.
-    </p>
-    <div class="hero__actions">
-        <a href="/activites" class="bouton bouton--principal">Découvrir nos activités</a>
-        <a href="/adhesion-et-dons" class="bouton bouton--secondaire">Adhérer ou faire un don</a>
+<section class="hero card border-0 overflow-hidden mb-4">
+    <div class="row g-0 align-items-stretch">
+        <div class="col-lg-7">
+            <div class="hero__contenu p-4 p-md-5">
+                <p class="hero__surtitre">Association à Noisy-le-Sec</p>
+                <h1>Apprendre, lire, écrire et se rencontrer.</h1>
+                <p class="hero__texte">
+                    En Toutes Lettres accompagne les habitants avec des ateliers de français,
+                    des actions culturelles et un lieu vivant: La Cabane.
+                </p>
+                <div class="hero__actions d-flex flex-wrap gap-2">
+                    <a href="/activites" class="btn btn-warning fw-semibold">Découvrir nos activités</a>
+                    <a href="/adhesion-et-dons" class="btn btn-outline-light fw-semibold">Adhérer ou faire un don</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <img src="/assets/img/placeholders/hero-lecture.svg"
+                 alt="Illustration de lecture et d'entraide"
+                 class="hero__image">
+        </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="section__entete">
+<section class="section mb-4">
+    <div class="section__entete d-flex justify-content-between align-items-end flex-wrap gap-2">
         <h2>Nos activités</h2>
         <a href="/activites" class="section__lien">Voir toutes les activités</a>
     </div>
@@ -25,21 +36,21 @@
     <?php if ($activites === []): ?>
         <p class="etat-vide">Les activités seront bientôt affichées ici.</p>
     <?php else: ?>
-        <div class="grille-cartes">
+        <div class="row g-3 mt-1">
             <?php foreach ($activites as $activite): ?>
-                <article class="carte">
-                    <?php if (!empty($activite['image_chemin'])): ?>
-                        <img src="/<?= e((string) $activite['image_chemin']) ?>"
-                             alt="<?= e((string) ($activite['image_alt'] ?? '')) ?>"
-                             class="carte__image">
-                    <?php endif; ?>
-                    <div class="carte__contenu">
-                        <h3>
-                            <a href="/activites/<?= e((string) $activite['adresse']) ?>"><?= e((string) $activite['titre']) ?></a>
-                        </h3>
-                        <?php if (!empty($activite['resume'])): ?>
-                            <p><?= e((string) $activite['resume']) ?></p>
-                        <?php endif; ?>
+                <article class="col-md-6 col-xl-4">
+                    <div class="carte card h-100 border-0 shadow-sm">
+                        <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : '/assets/img/placeholders/activite.svg' ?>"
+                             alt="<?= e((string) ($activite['image_alt'] ?? ('Illustration de l\'activité ' . $activite['titre']))) ?>"
+                             class="carte__image card-img-top">
+                        <div class="carte__contenu card-body">
+                            <h3 class="h5">
+                                <a href="/activites/<?= e((string) $activite['adresse']) ?>" class="stretched-link text-decoration-none"><?= e((string) $activite['titre']) ?></a>
+                            </h3>
+                            <?php if (!empty($activite['resume'])): ?>
+                                <p class="mb-0"><?= e((string) $activite['resume']) ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </article>
             <?php endforeach; ?>
@@ -47,8 +58,8 @@
     <?php endif; ?>
 </section>
 
-<section class="section section--teintee">
-    <div class="section__entete">
+<section class="section section--teintee p-3 p-md-4 mb-4">
+    <div class="section__entete d-flex justify-content-between align-items-end flex-wrap gap-2">
         <h2>Actualités et annonces</h2>
         <a href="/actualites" class="section__lien">Consulter toutes les actualités</a>
     </div>
@@ -56,30 +67,35 @@
     <?php if ($actualites === []): ?>
         <p class="etat-vide">Les actualités seront bientôt affichées ici.</p>
     <?php else: ?>
-        <div class="liste-actus">
+        <div class="liste-actus mt-2">
             <?php foreach ($actualites as $actualite): ?>
                 <?php $date = $actualite['date_affichage'] ?? null; ?>
-                <article class="actu-ligne">
-                    <h3>
+                <article class="actu-ligne d-flex gap-3 align-items-start">
+                    <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : '/assets/img/placeholders/actualite.svg' ?>"
+                         alt="<?= e((string) ($actualite['image_alt'] ?? ('Illustration de l\'actualité ' . $actualite['titre']))) ?>"
+                         class="actu-ligne__image">
+                    <div>
+                    <h3 class="h5 mb-1">
                         <a href="/actualites/<?= e((string) $actualite['adresse']) ?>"><?= e((string) $actualite['titre']) ?></a>
                     </h3>
-                    <p class="actu-ligne__meta">
+                    <p class="actu-ligne__meta mb-1">
                         <?= e((string) ($actualite['type'] === 'annonce' ? 'Annonce' : 'Actualité')) ?>
                         <?php if ($date instanceof DateTimeImmutable): ?>
                             · <?= e($date->format('d/m/Y')) ?>
                         <?php endif; ?>
                     </p>
                     <?php if (!empty($actualite['extrait'])): ?>
-                        <p><?= e((string) $actualite['extrait']) ?></p>
+                        <p class="mb-0"><?= e((string) $actualite['extrait']) ?></p>
                     <?php endif; ?>
+                    </div>
                 </article>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </section>
 
-<section class="section">
-    <div class="section__entete">
+<section class="section mb-4">
+    <div class="section__entete d-flex justify-content-between align-items-end flex-wrap gap-2">
         <h2>À venir dans l'agenda</h2>
         <a href="/agenda" class="section__lien">Voir l'agenda complet</a>
     </div>
@@ -87,10 +103,10 @@
     <?php if ($evenements === []): ?>
         <p class="etat-vide">Aucun événement à venir pour l'instant.</p>
     <?php else: ?>
-        <ul class="liste-agenda">
+        <ul class="liste-agenda mt-2">
             <?php foreach ($evenements as $evenement): ?>
                 <?php $debut = new DateTimeImmutable((string) $evenement['debut']); ?>
-                <li class="agenda-item">
+                <li class="agenda-item card border-0 shadow-sm">
                     <p class="agenda-item__date"><?= e($debut->format('d/m/Y')) ?> à <?= e($debut->format('H\hi')) ?></p>
                     <h3><?= e((string) $evenement['titre']) ?></h3>
                     <?php if (!empty($evenement['lieu'])): ?>
@@ -102,11 +118,16 @@
     <?php endif; ?>
 </section>
 
-<section class="section section--appel">
+<section class="section section--appel p-3 p-md-4">
     <h2>Soutenir l'association</h2>
     <p>
         Adhésion, don ponctuel, participation à un événement: toutes les
         contributions aident à maintenir des activités accessibles à tous.
     </p>
-    <a href="/adhesion-et-dons" class="bouton bouton--principal">Voir les options de soutien</a>
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        <a href="/adhesion-et-dons" class="btn btn-warning fw-semibold">Voir les options de soutien</a>
+        <img src="/assets/img/placeholders/soutien.svg"
+             alt="Illustration de soutien"
+             class="section__image-inline">
+    </div>
 </section>

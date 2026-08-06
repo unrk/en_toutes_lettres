@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="Image de substitution pour partenaire">
+  <rect width="800" height="500" fill="#eef4ed"/>
+  <g transform="translate(104 98)">
+    <rect width="592" height="304" rx="28" fill="#ffffff" stroke="#c9d9c4" stroke-width="10"/>
+    <circle cx="160" cy="154" r="74" fill="#d9eee2"/>
+    <path d="M124 160l28 28 48-58" fill="none" stroke="#0e7b67" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="286" y="108" width="226" height="20" rx="10" fill="#aec7af"/>
+    <rect x="286" y="148" width="186" height="16" rx="8" fill="#cad8c7"/>
+    <rect x="286" y="182" width="212" height="16" rx="8" fill="#cad8c7"/>
+    <rect x="286" y="236" width="162" height="46" rx="23" fill="#f28f3b"/>
+  </g>
+  <text x="235" y="454" font-family="Trebuchet MS, sans-serif" font-size="30" font-weight="700" fill="#536553">Partenaire</text>
+</svg>

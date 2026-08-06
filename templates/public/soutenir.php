@@ -27,22 +27,32 @@ $actions = [
         Les paiements sont traités via HelloAsso. Vous restez sur un parcours
         simple et sécurisé, sans création de compte obligatoire.
     </p>
+    <img src="/assets/img/placeholders/soutien.svg"
+         alt="Illustration de soutien"
+         class="entete-page__illustration">
 </header>
 
-<div class="grille-actions">
+<div class="row g-3">
     <?php foreach ($actions as $action): ?>
-        <article class="carte-action">
-            <h2><?= e($action['titre']) ?></h2>
-            <p><?= e($action['description']) ?></p>
-            <?php if ($action['url'] !== ''): ?>
-                <a href="<?= e($action['url']) ?>" target="_blank" rel="noopener noreferrer" class="bouton bouton--principal">
-                    <?= e($action['libelle']) ?>
-                </a>
-            <?php else: ?>
-                <p class="etat-attente">
-                    Lien à renseigner dans la configuration locale.
-                </p>
-            <?php endif; ?>
+        <article class="col-md-6 col-xl-4">
+            <div class="carte-action card h-100 border-0 shadow-sm">
+                <img src="/assets/img/placeholders/soutien.svg"
+                     alt="Illustration de soutien"
+                     class="carte__image card-img-top">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5"><?= e($action['titre']) ?></h2>
+                    <p><?= e($action['description']) ?></p>
+                    <?php if ($action['url'] !== ''): ?>
+                        <a href="<?= e($action['url']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-warning fw-semibold mt-auto">
+                            <?= e($action['libelle']) ?>
+                        </a>
+                    <?php else: ?>
+                        <p class="etat-attente mb-0">
+                            Lien à renseigner dans la configuration locale.
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </div>
         </article>
     <?php endforeach; ?>
 </div>

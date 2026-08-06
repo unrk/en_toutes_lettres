@@ -4,6 +4,9 @@
 <header class="entete-page">
     <h1>Partenaires</h1>
     <p>Ces structures soutiennent ou accompagnent les actions d'En Toutes Lettres.</p>
+    <img src="/assets/img/placeholders/partenaire.svg"
+         alt="Illustration partenaires"
+         class="entete-page__illustration">
 </header>
 
 <?php if ($partenaires === []): ?>
@@ -21,7 +24,9 @@
                          alt="<?= e((string) ($partenaire['logo_alt'] ?? $partenaire['nom'])) ?>"
                          class="partenaire__logo">
                 <?php else: ?>
-                    <span class="partenaire__nom"><?= e((string) $partenaire['nom']) ?></span>
+                    <img src="/assets/img/placeholders/partenaire.svg"
+                         alt="<?= e((string) ('Illustration du partenaire ' . $partenaire['nom'])) ?>"
+                         class="partenaire__logo partenaire__logo--substitution">
                 <?php endif; ?>
 
                 <?php if (!empty($partenaire['lien_url'])): ?>

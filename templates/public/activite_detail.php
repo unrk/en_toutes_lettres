@@ -5,18 +5,16 @@
 <article class="detail">
     <p><a href="/activites" class="lien-retour">← Retour aux activités</a></p>
 
-    <header class="detail__entete">
+    <header class="detail__entete mb-3">
         <h1><?= e((string) $activite['titre']) ?></h1>
         <?php if (!empty($activite['resume'])): ?>
             <p class="detail__chapo"><?= e((string) $activite['resume']) ?></p>
         <?php endif; ?>
     </header>
 
-    <?php if (!empty($activite['image_chemin'])): ?>
-        <img src="/<?= e((string) $activite['image_chemin']) ?>"
-             alt="<?= e((string) ($activite['image_alt'] ?? '')) ?>"
-             class="detail__image">
-    <?php endif; ?>
+    <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : '/assets/img/placeholders/activite.svg' ?>"
+         alt="<?= e((string) ($activite['image_alt'] ?? ('Illustration de l\'activité ' . $activite['titre']))) ?>"
+         class="detail__image mb-3">
 
     <div class="detail__contenu">
         <?= (string) $activite['description'] ?>

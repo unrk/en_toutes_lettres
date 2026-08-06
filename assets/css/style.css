@@ -156,8 +156,18 @@
     background: linear-gradient(140deg, #0b6b59 0%, #084f43 55%, #15342f 100%);
     color: #f8f7f5;
     border-radius: 1.1rem;
-    padding: 2rem 1.2rem;
     box-shadow: var(--ombre-legere);
+}
+
+.hero__contenu {
+    height: 100%;
+}
+
+.hero__image {
+    width: 100%;
+    height: 100%;
+    min-height: 14rem;
+    object-fit: cover;
 }
 
 .hero__surtitre {
@@ -243,6 +253,11 @@
     font-size: 0.95rem;
 }
 
+.section__image-inline {
+    width: min(16rem, 100%);
+    border-radius: 0.7rem;
+}
+
 .grille-cartes {
     display: grid;
     gap: 1rem;
@@ -298,6 +313,14 @@
     margin: 0;
 }
 
+.actu-ligne__image {
+    width: 7.2rem;
+    height: 5.2rem;
+    border-radius: 0.65rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
 .actu-ligne__meta {
     margin: 0.3rem 0;
     color: #5f655f;
@@ -344,6 +367,13 @@
     margin-bottom: 0.6rem;
 }
 
+.entete-page__illustration {
+    margin-top: 0.5rem;
+    width: min(20rem, 100%);
+    border-radius: 0.75rem;
+    box-shadow: var(--ombre-legere);
+}
+
 .etat-vide,
 .etat-attente {
     background-color: #fff4e5;
@@ -387,6 +417,14 @@
 
 .detail__contenu {
     margin-top: 1rem;
+}
+
+.detail__banniere {
+    width: 100%;
+    border-radius: 0.75rem;
+    margin-top: 0.75rem;
+    max-height: 15rem;
+    object-fit: cover;
 }
 
 .detail__contenu h2,
@@ -450,6 +488,14 @@
     margin-top: 0.6rem;
 }
 
+.timeline__image {
+    width: 100%;
+    max-height: 14rem;
+    object-fit: cover;
+    border-radius: 0.65rem;
+    margin: 0.5rem 0;
+}
+
 .grille-partenaires {
     list-style: none;
     margin: 0;
@@ -474,6 +520,10 @@
     max-width: 100%;
     max-height: 4.2rem;
     display: block;
+}
+
+.partenaire__logo--substitution {
+    max-height: 5.8rem;
 }
 
 .partenaire__nom {
@@ -539,8 +589,17 @@
         padding: 0.52rem 0.75rem;
     }
 
-    .hero {
-        padding: 1.35rem 1rem;
+    .hero__actions .btn {
+        width: 100%;
+    }
+
+    .actu-ligne {
+        flex-direction: column;
+    }
+
+    .actu-ligne__image {
+        width: 100%;
+        height: 9rem;
     }
 
     .detail,

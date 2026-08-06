@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="Image de substitution pour agenda">
+  <rect width="800" height="500" fill="#e8f4f7"/>
+  <rect x="95" y="62" width="610" height="376" rx="30" fill="#ffffff" stroke="#b6d3db" stroke-width="10"/>
+  <rect x="95" y="62" width="610" height="92" rx="30" fill="#0e7b67"/>
+  <rect x="162" y="38" width="32" height="58" rx="16" fill="#f28f3b"/>
+  <rect x="606" y="38" width="32" height="58" rx="16" fill="#f28f3b"/>
+  <g fill="#dceef2">
+    <rect x="142" y="196" width="150" height="78" rx="12"/>
+    <rect x="325" y="196" width="150" height="78" rx="12"/>
+    <rect x="508" y="196" width="150" height="78" rx="12"/>
+    <rect x="142" y="295" width="150" height="78" rx="12"/>
+    <rect x="325" y="295" width="150" height="78" rx="12"/>
+    <rect x="508" y="295" width="150" height="78" rx="12"/>
+  </g>
+  <circle cx="400" cy="333" r="26" fill="#f28f3b"/>
+  <text x="351" y="129" font-family="Trebuchet MS, sans-serif" font-size="34" font-weight="700" fill="#ffffff">Agenda</text>
+</svg>

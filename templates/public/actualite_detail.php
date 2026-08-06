@@ -20,11 +20,9 @@ if (!empty($actualite['publie_le'])) {
         <h1><?= e((string) $actualite['titre']) ?></h1>
     </header>
 
-    <?php if (!empty($actualite['image_chemin'])): ?>
-        <img src="/<?= e((string) $actualite['image_chemin']) ?>"
-             alt="<?= e((string) ($actualite['image_alt'] ?? '')) ?>"
-             class="detail__image">
-    <?php endif; ?>
+        <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : '/assets/img/placeholders/actualite.svg' ?>"
+            alt="<?= e((string) ($actualite['image_alt'] ?? ('Illustration de l\'actualité ' . $actualite['titre']))) ?>"
+            class="detail__image mb-3">
 
     <div class="detail__contenu">
         <?= (string) $actualite['contenu'] ?>
