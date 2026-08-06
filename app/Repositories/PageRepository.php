@@ -8,6 +8,22 @@ use App\Core\Database;
 
 final class PageRepository
 {
+    public static function trouveParAdressePubliee(string $adresse): ?array
+    {
+        $requete = Database::connexion()->prepare(
+            'SELECT id, titre, adresse, contenu, statut
+             FROM pages
+             WHERE adresse = :adresse
+               AND statut = "publie"
+             LIMIT 1'
+        );
+        $requete->execute(['adresse' => $adresse]);
+
+        $page = $requete->fetch();
+
+        return $page === false ? null : $page;
+    }
+
     public static function toutes(): array
     {
         return Database::connexion()->query(

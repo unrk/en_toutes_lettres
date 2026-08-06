@@ -8,6 +8,16 @@ use App\Core\Database;
 
 final class PartenaireRepository
 {
+    public static function publies(): array
+    {
+        return Database::connexion()->query(
+            'SELECT id, nom, lien_url, logo_chemin, logo_alt, ordre
+             FROM partenaires
+             WHERE statut = "publie"
+             ORDER BY ordre ASC, id ASC'
+        )->fetchAll();
+    }
+
     public static function tous(): array
     {
         return Database::connexion()->query(

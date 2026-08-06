@@ -8,6 +8,35 @@ use App\Core\Database;
 
 final class EvenementRepository
 {
+    public static function publies(): array
+    {
+        return Database::connexion()->query(
+            'SELECT id, titre, adresse, description, debut, fin, lieu, image_chemin, image_alt,
+                    (debut >= NOW()) AS a_venir
+             FROM evenements
+             WHERE statut = "publie"
+             ORDER BY (debut >= NOW()) DESC,
+                      CASE WHEN debut >= NOW() THEN debut END ASC,
+                      CASE WHEN debut <  NOW() THEN debut END DESC'
+        )->fetchAll();
+    }
+
+    public static function aVenir(int $limite): array
+    {
+        $requete = Database::connexion()->prepare(
+            'SELECT id, titre, adresse, debut, fin, lieu
+             FROM evenements
+             WHERE statut = "publie"
+               AND debut >= NOW()
+             ORDER BY debut ASC
+             LIMIT :limite'
+        );
+        $requete->bindValue('limite', $limite, \PDO::PARAM_INT);
+        $requete->execute();
+
+        return $requete->fetchAll();
+    }
+
     /**
      * Les événements à venir d'abord (du plus proche au plus lointain), puis
      * les passés du plus récent au plus ancien : c'est l'ordre dans lequel une

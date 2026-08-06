@@ -11,6 +11,19 @@ return [
 
     'url_base' => 'http://localhost:8000',
 
+    // Liens publics affichés sur la vitrine. Laissez vide tant que vous n'avez
+    // pas les URLs définitives.
+    'liens_helloasso' => [
+        'adhesion' => '',
+        'don' => '',
+        'billetterie' => '',
+    ],
+
+    'liens_reseaux_sociaux' => [
+        'facebook' => '',
+        'instagram' => '',
+    ],
+
     'bdd' => [
         'hote' => '127.0.0.1',
         'port' => 3306,

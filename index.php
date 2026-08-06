@@ -14,14 +14,21 @@ use App\Controllers\Admin\GalerieController;
 use App\Controllers\Admin\PageController;
 use App\Controllers\Admin\PartenaireController;
 use App\Controllers\Admin\TableauDeBordController;
-use App\Controllers\HomeController;
+use App\Controllers\SiteController;
 use App\Core\NotFoundException;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Router;
 
 $routeur = new Router();
-$routeur->get('/', [HomeController::class, 'accueil']);
+$routeur->get('/', [SiteController::class, 'accueil']);
+$routeur->get('/activites', [SiteController::class, 'activites']);
+$routeur->get('/activites/{adresse}', [SiteController::class, 'activite']);
+$routeur->get('/actualites', [SiteController::class, 'actualites']);
+$routeur->get('/actualites/{adresse}', [SiteController::class, 'actualite']);
+$routeur->get('/agenda', [SiteController::class, 'agenda']);
+$routeur->get('/partenaires', [SiteController::class, 'partenaires']);
+$routeur->get('/adhesion-et-dons', [SiteController::class, 'soutenir']);
 
 $routeur->get('/admin/connexion', [AuthController::class, 'formulaire']);
 $routeur->post('/admin/connexion', [AuthController::class, 'traiter']);
@@ -95,6 +102,8 @@ $routeur->get('/admin/comptes/{id}/modifier', [CompteController::class, 'modifie
 $routeur->post('/admin/comptes/{id}/modifier', [CompteController::class, 'enregistrerModification']);
 $routeur->post('/admin/comptes/{id}/desactiver', [CompteController::class, 'desactiver']);
 $routeur->post('/admin/comptes/{id}/reactiver', [CompteController::class, 'reactiver']);
+
+$routeur->get('/{adresse}', [SiteController::class, 'page']);
 
 try {
     $routeur->distribuer(new Request());

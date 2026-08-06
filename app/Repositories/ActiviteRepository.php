@@ -8,6 +8,34 @@ use App\Core\Database;
 
 final class ActiviteRepository
 {
+    public static function publiees(): array
+    {
+        return Database::connexion()->query(
+            'SELECT id, titre, adresse, resume, description, creneaux, lieu, public_vise,
+                    tarif, inscriptions, image_chemin, image_alt, ordre
+             FROM activites
+             WHERE statut = "publie"
+             ORDER BY ordre ASC, id ASC'
+        )->fetchAll();
+    }
+
+    public static function trouveParAdressePubliee(string $adresse): ?array
+    {
+        $requete = Database::connexion()->prepare(
+            'SELECT id, titre, adresse, resume, description, creneaux, lieu, public_vise,
+                    tarif, inscriptions, image_chemin, image_alt, ordre
+             FROM activites
+             WHERE adresse = :adresse
+               AND statut = "publie"
+             LIMIT 1'
+        );
+        $requete->execute(['adresse' => $adresse]);
+
+        $activite = $requete->fetch();
+
+        return $activite === false ? null : $activite;
+    }
+
     public static function tous(): array
     {
         return Database::connexion()->query(

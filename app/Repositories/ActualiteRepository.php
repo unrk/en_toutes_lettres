@@ -8,6 +8,55 @@ use App\Core\Database;
 
 final class ActualiteRepository
 {
+    public static function publiees(): array
+    {
+        $requete = Database::connexion()->query(
+            'SELECT id, titre, type, adresse, contenu, image_chemin, image_alt, statut,
+                    publie_le, cree_le
+             FROM actualites
+             WHERE statut = "publie"
+                OR (statut = "programme" AND publie_le IS NOT NULL AND publie_le <= NOW())
+             ORDER BY COALESCE(publie_le, cree_le) DESC'
+        );
+
+        return $requete->fetchAll();
+    }
+
+    public static function recentes(int $limite): array
+    {
+        $requete = Database::connexion()->prepare(
+            'SELECT id, titre, type, adresse, contenu, image_chemin, image_alt, statut,
+                    publie_le, cree_le
+             FROM actualites
+             WHERE statut = "publie"
+                OR (statut = "programme" AND publie_le IS NOT NULL AND publie_le <= NOW())
+             ORDER BY COALESCE(publie_le, cree_le) DESC
+             LIMIT :limite'
+        );
+        $requete->bindValue('limite', $limite, \PDO::PARAM_INT);
+        $requete->execute();
+
+        return $requete->fetchAll();
+    }
+
+    public static function trouveParAdressePublique(string $adresse): ?array
+    {
+        $requete = Database::connexion()->prepare(
+            'SELECT id, titre, type, adresse, contenu, image_chemin, image_alt, statut,
+                    publie_le, cree_le
+             FROM actualites
+             WHERE adresse = :adresse
+               AND (statut = "publie"
+                OR (statut = "programme" AND publie_le IS NOT NULL AND publie_le <= NOW()))
+             LIMIT 1'
+        );
+        $requete->execute(['adresse' => $adresse]);
+
+        $actualite = $requete->fetch();
+
+        return $actualite === false ? null : $actualite;
+    }
+
     public static function tous(): array
     {
         $requete = Database::connexion()->query(

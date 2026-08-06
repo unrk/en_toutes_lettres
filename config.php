@@ -7,6 +7,15 @@ $configParDefaut = [
     'fuseau_horaire' => 'Europe/Paris',
     'nom_application' => 'En Toutes Lettres',
     'url_base' => '',
+    'liens_helloasso' => [
+        'adhesion' => '',
+        'don' => '',
+        'billetterie' => '',
+    ],
+    'liens_reseaux_sociaux' => [
+        'facebook' => '',
+        'instagram' => '',
+    ],
     'bdd' => [
         'hote' => '127.0.0.1',
         'port' => 3306,
