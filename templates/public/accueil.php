@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-lg-5">
-            <img src="/assets/img/placeholders/hero-lecture.svg"
+            <img src="<?= e(image_substitution('accueil-lecture', 900, 700)) ?>"
                  alt="Illustration de lecture et d'entraide"
                  class="hero__image">
         </div>
@@ -40,7 +40,7 @@
             <?php foreach ($activites as $activite): ?>
                 <article class="col-md-6 col-xl-4">
                     <div class="carte card h-100 border-0 shadow-sm">
-                        <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : '/assets/img/placeholders/activite.svg' ?>"
+                        <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : e(image_substitution((string) $activite['adresse'], 600, 400)) ?>"
                              alt="<?= e((string) ($activite['image_alt'] ?? ('Illustration de l\'activité ' . $activite['titre']))) ?>"
                              class="carte__image card-img-top">
                         <div class="carte__contenu card-body">
@@ -71,7 +71,7 @@
             <?php foreach ($actualites as $actualite): ?>
                 <?php $date = $actualite['date_affichage'] ?? null; ?>
                 <article class="actu-ligne d-flex gap-3 align-items-start">
-                    <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : '/assets/img/placeholders/actualite.svg' ?>"
+                    <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : e(image_substitution((string) $actualite['adresse'], 320, 240)) ?>"
                          alt="<?= e((string) ($actualite['image_alt'] ?? ('Illustration de l\'actualité ' . $actualite['titre']))) ?>"
                          class="actu-ligne__image">
                     <div>
@@ -126,7 +126,7 @@
     </p>
     <div class="d-flex flex-wrap align-items-center gap-3">
         <a href="/adhesion-et-dons" class="btn btn-warning fw-semibold">Voir les options de soutien</a>
-        <img src="/assets/img/placeholders/soutien.svg"
+        <img src="<?= e(image_substitution('soutien-asso', 520, 360)) ?>"
              alt="Illustration de soutien"
              class="section__image-inline">
     </div>

@@ -22,7 +22,7 @@ $anneeCourante = null;
             <?php endif; ?>
 
             <article class="actu-ligne d-flex gap-3 align-items-start">
-                <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : '/assets/img/placeholders/actualite.svg' ?>"
+                <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : e(image_substitution((string) $actualite['adresse'], 320, 240)) ?>"
                      alt="<?= e((string) ($actualite['image_alt'] ?? ('Illustration de l\'actualité ' . $actualite['titre']))) ?>"
                      class="actu-ligne__image">
                 <div>

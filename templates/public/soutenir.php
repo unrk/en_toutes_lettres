@@ -27,7 +27,7 @@ $actions = [
         Les paiements sont traités via HelloAsso. Vous restez sur un parcours
         simple et sécurisé, sans création de compte obligatoire.
     </p>
-    <img src="/assets/img/placeholders/soutien.svg"
+    <img src="<?= e(image_substitution('soutien-asso', 640, 360)) ?>"
          alt="Illustration de soutien"
          class="entete-page__illustration">
 </header>
@@ -36,7 +36,7 @@ $actions = [
     <?php foreach ($actions as $action): ?>
         <article class="col-md-6 col-xl-4">
             <div class="carte-action card h-100 border-0 shadow-sm">
-                <img src="/assets/img/placeholders/soutien.svg"
+                <img src="<?= e(image_substitution($action['titre'], 600, 400)) ?>"
                      alt="Illustration de soutien"
                      class="carte__image card-img-top">
                 <div class="card-body d-flex flex-column">

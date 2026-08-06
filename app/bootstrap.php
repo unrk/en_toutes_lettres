@@ -42,6 +42,24 @@ function e(?string $valeur): string
 }
 
 /**
+ * Adresse d'une image d'illustration « de substitution », affichée quand aucune
+ * photo n'a été mise en ligne pour un contenu. Les photos proviennent du service
+ * gratuit Lorem Picsum (picsum.photos).
+ *
+ * Le « germe » sert à choisir la photo : un même germe redonne toujours la même
+ * image. Ainsi une activité garde la même illustration d'une page à l'autre au
+ * lieu d'en changer à chaque visite, et deux contenus différents (germes
+ * différents) reçoivent deux photos différentes. Passez donc un texte propre à
+ * chaque contenu (son adresse ou son titre).
+ */
+function image_substitution(string $germe, int $largeur = 800, int $hauteur = 600): string
+{
+    $germe = $germe !== '' ? $germe : 'en-toutes-lettres';
+
+    return 'https://picsum.photos/seed/' . rawurlencode($germe) . '/' . $largeur . '/' . $hauteur;
+}
+
+/**
  * Affiche un champ de formulaire du back-office depuis templates/admin/champs/.
  * Regrouper les champs ici évite de répéter la même structure (libellé, aide,
  * message d'erreur) dans chaque formulaire : une correction d'ergonomie faite

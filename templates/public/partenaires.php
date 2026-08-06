@@ -4,7 +4,7 @@
 <header class="entete-page">
     <h1>Partenaires</h1>
     <p>Ces structures soutiennent ou accompagnent les actions d'En Toutes Lettres.</p>
-    <img src="/assets/img/placeholders/partenaire.svg"
+    <img src="<?= e(image_substitution('partenaires', 640, 360)) ?>"
          alt="Illustration partenaires"
          class="entete-page__illustration">
 </header>
@@ -24,7 +24,7 @@
                          alt="<?= e((string) ($partenaire['logo_alt'] ?? $partenaire['nom'])) ?>"
                          class="partenaire__logo">
                 <?php else: ?>
-                    <img src="/assets/img/placeholders/partenaire.svg"
+                    <img src="<?= e(image_substitution((string) $partenaire['nom'], 400, 300)) ?>"
                          alt="<?= e((string) ('Illustration du partenaire ' . $partenaire['nom'])) ?>"
                          class="partenaire__logo partenaire__logo--substitution">
                 <?php endif; ?>

@@ -12,7 +12,7 @@
         <?php endif; ?>
     </header>
 
-    <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : '/assets/img/placeholders/activite.svg' ?>"
+    <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : e(image_substitution((string) $activite['adresse'], 1200, 700)) ?>"
          alt="<?= e((string) ($activite['image_alt'] ?? ('Illustration de l\'activité ' . $activite['titre']))) ?>"
          class="detail__image mb-3">
 

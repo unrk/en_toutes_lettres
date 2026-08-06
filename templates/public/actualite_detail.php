@@ -20,7 +20,7 @@ if (!empty($actualite['publie_le'])) {
         <h1><?= e((string) $actualite['titre']) ?></h1>
     </header>
 
-        <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : '/assets/img/placeholders/actualite.svg' ?>"
+        <img src="<?= !empty($actualite['image_chemin']) ? '/' . e((string) $actualite['image_chemin']) : e(image_substitution((string) $actualite['adresse'], 1200, 700)) ?>"
             alt="<?= e((string) ($actualite['image_alt'] ?? ('Illustration de l\'actualité ' . $actualite['titre']))) ?>"
             class="detail__image mb-3">
 

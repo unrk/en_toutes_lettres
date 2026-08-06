@@ -16,7 +16,7 @@
         <?php foreach ($activites as $activite): ?>
             <article class="col-md-6 col-xl-4">
                 <div class="carte card h-100 border-0 shadow-sm">
-                    <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : '/assets/img/placeholders/activite.svg' ?>"
+                    <img src="<?= !empty($activite['image_chemin']) ? '/' . e((string) $activite['image_chemin']) : e(image_substitution((string) $activite['adresse'], 600, 400)) ?>"
                          alt="<?= e((string) ($activite['image_alt'] ?? ('Illustration de l\'activité ' . $activite['titre']))) ?>"
                          class="carte__image card-img-top">
                     <div class="carte__contenu card-body d-flex flex-column">

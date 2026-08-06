@@ -5,7 +5,7 @@ $ouvertPasse = false;
 <header class="entete-page">
     <h1>Agenda</h1>
     <p>Retrouvez les prochains rendez-vous et les événements passés de l'association.</p>
-    <img src="/assets/img/placeholders/agenda.svg"
+    <img src="<?= e(image_substitution('agenda-evenements', 640, 360)) ?>"
          alt="Illustration d'agenda"
          class="entete-page__illustration">
 </header>
@@ -41,7 +41,7 @@ $ouvertPasse = false;
                 <?php if (!empty($evenement['lieu'])): ?>
                     <p class="timeline__lieu"><?= e((string) $evenement['lieu']) ?></p>
                 <?php endif; ?>
-                <img src="<?= !empty($evenement['image_chemin']) ? '/' . e((string) $evenement['image_chemin']) : '/assets/img/placeholders/agenda.svg' ?>"
+                <img src="<?= !empty($evenement['image_chemin']) ? '/' . e((string) $evenement['image_chemin']) : e(image_substitution((string) $evenement['titre'], 800, 450)) ?>"
                      alt="<?= e((string) ($evenement['image_alt'] ?? ('Illustration de l\'événement ' . $evenement['titre']))) ?>"
                      class="timeline__image">
                 <div class="timeline__description">
